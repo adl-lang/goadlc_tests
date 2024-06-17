@@ -4,22 +4,26 @@ package struct_with_void
 import ()
 
 type StructB[X any] struct {
+	_StructB[X]
+}
+
+type _StructB[X any] struct {
 	B struct{} `json:"B"`
 }
 
-func New_StructB[X any](
-	b struct{},
-) StructB[X] {
+func MakeAll_StructB[X any]() StructB[X] {
 	return StructB[X]{
-		B: b,
+		_StructB[X]{
+			B: struct{}{},
+		},
 	}
 }
 
-func Make_StructB[X any](
-	b struct{},
-) StructB[X] {
+func Make_StructB[X any]() StructB[X] {
 	ret := StructB[X]{
-		B: b,
+		_StructB[X]{
+			B: struct{}{},
+		},
 	}
 	return ret
 }
@@ -27,22 +31,26 @@ func Make_StructB[X any](
 type StructC = StructOf
 
 type StructOf struct {
+	_StructOf
+}
+
+type _StructOf struct {
 	A struct{} `json:"A"`
 }
 
-func New_StructOf(
-	a struct{},
-) StructOf {
+func MakeAll_StructOf() StructOf {
 	return StructOf{
-		A: a,
+		_StructOf{
+			A: struct{}{},
+		},
 	}
 }
 
-func Make_StructOf(
-	a struct{},
-) StructOf {
+func Make_StructOf() StructOf {
 	ret := StructOf{
-		A: a,
+		_StructOf{
+			A: struct{}{},
+		},
 	}
 	return ret
 }

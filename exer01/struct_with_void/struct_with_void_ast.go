@@ -8,182 +8,134 @@ import (
 	"github.com/adl-lang/goadl_rt/v3/sys/types"
 )
 
-func Texpr_StructB[X any](x goadl.ATypeExpr[X]) goadl.ATypeExpr[StructB[X]] {
-	return goadl.ATypeExpr[StructB[X]]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "exer01.struct_with_void",
-						Name:       "StructB",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{x.Value},
-		},
-	}
+func Texpr_StructB[X any](x adlast.ATypeExpr[X]) adlast.ATypeExpr[StructB[X]] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("exer01.struct_with_void", "StructB"),
+		),
+		[]adlast.TypeExpr{x.Value},
+	)
+	return adlast.Make_ATypeExpr[StructB[X]](te)
 }
 
 func AST_StructB() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "StructB",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Struct_{
-				V: adlast.Struct{
-					TypeParams: []adlast.Ident{
-						"X",
-					},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "B",
-							SerializedName: "B",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Void"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "exer01.struct_with_void",
-		Decl:       decl,
-	}
+	decl := adlast.MakeAll_Decl(
+		"StructB",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_struct_(
+			adlast.MakeAll_Struct(
+				[]adlast.Ident{
+					"X",
+				},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"B",
+						"B",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Void",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("exer01.struct_with_void", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "exer01.struct_with_void", Name: "StructB"},
+		adlast.Make_ScopedName("exer01.struct_with_void", "StructB"),
 		AST_StructB(),
 	)
 }
 
-func Texpr_StructC() goadl.ATypeExpr[StructC] {
-	return goadl.ATypeExpr[StructC]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "exer01.struct_with_void",
-						Name:       "StructC",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{},
-		},
-	}
+func Texpr_StructC() adlast.ATypeExpr[StructC] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("exer01.struct_with_void", "StructC"),
+		),
+		[]adlast.TypeExpr{},
+	)
+	return adlast.Make_ATypeExpr[StructC](te)
 }
 
 func AST_StructC() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "StructC",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Type_{
-				V: adlast.TypeDef{
-					TypeParams: []adlast.Ident{},
-					TypeExpr: adlast.TypeExpr{
-						TypeRef: adlast.TypeRef{
-							Branch: adlast.TypeRef_Reference{
-								V: adlast.ScopedName{
-									ModuleName: "exer01.struct_with_void",
-									Name:       "StructOf",
-								}},
-						},
-						Parameters: []adlast.TypeExpr{},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "exer01.struct_with_void",
-		Decl:       decl,
-	}
+	decl := adlast.MakeAll_Decl(
+		"StructC",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_type_(
+			adlast.MakeAll_TypeDef(
+				[]adlast.Ident{},
+				adlast.MakeAll_TypeExpr(
+					adlast.Make_TypeRef_reference(
+						adlast.MakeAll_ScopedName(
+							"exer01.struct_with_void",
+							"StructOf",
+						),
+					),
+					[]adlast.TypeExpr{},
+				),
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("exer01.struct_with_void", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "exer01.struct_with_void", Name: "StructC"},
+		adlast.Make_ScopedName("exer01.struct_with_void", "StructC"),
 		AST_StructC(),
 	)
 }
 
-func Texpr_StructOf() goadl.ATypeExpr[StructOf] {
-	return goadl.ATypeExpr[StructOf]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "exer01.struct_with_void",
-						Name:       "StructOf",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{},
-		},
-	}
+func Texpr_StructOf() adlast.ATypeExpr[StructOf] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("exer01.struct_with_void", "StructOf"),
+		),
+		[]adlast.TypeExpr{},
+	)
+	return adlast.Make_ATypeExpr[StructOf](te)
 }
 
 func AST_StructOf() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "StructOf",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Struct_{
-				V: adlast.Struct{
-					TypeParams: []adlast.Ident{},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "A",
-							SerializedName: "A",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Void"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "exer01.struct_with_void",
-		Decl:       decl,
-	}
+	decl := adlast.MakeAll_Decl(
+		"StructOf",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_struct_(
+			adlast.MakeAll_Struct(
+				[]adlast.Ident{},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"A",
+						"A",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Void",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("exer01.struct_with_void", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "exer01.struct_with_void", Name: "StructOf"},
+		adlast.Make_ScopedName("exer01.struct_with_void", "StructOf"),
 		AST_StructOf(),
 	)
 }

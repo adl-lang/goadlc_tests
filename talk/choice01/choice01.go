@@ -16,64 +16,79 @@ type ChoiceOneBranch interface {
 func (*ChoiceOne) MakeNewBranch(key string) (any, error) {
 	switch key {
 	case "pattern":
-		return &ChoiceOne_Pattern{}, nil
+		return &_ChoiceOne_Pattern{}, nil
 	case "bootstrapping":
-		return &ChoiceOne_Bootstrapping{}, nil
+		return &_ChoiceOne_Bootstrapping{}, nil
 	case "codeGen":
-		return &ChoiceOne_CodeGen{}, nil
+		return &_ChoiceOne_CodeGen{}, nil
 	}
 	return nil, fmt.Errorf("unknown branch is : %s", key)
 }
 
-type ChoiceOne_Pattern struct {
+type _ChoiceOne_Pattern struct {
 	V Sumtype `branch:"pattern"`
 }
-type ChoiceOne_Bootstrapping struct {
+type _ChoiceOne_Bootstrapping struct {
 	V []string `branch:"bootstrapping"`
 }
-type ChoiceOne_CodeGen struct {
+type _ChoiceOne_CodeGen struct {
 	V LangGen `branch:"codeGen"`
 }
 
-func (ChoiceOne_Pattern) isChoiceOneBranch()       {}
-func (ChoiceOne_Bootstrapping) isChoiceOneBranch() {}
-func (ChoiceOne_CodeGen) isChoiceOneBranch()       {}
+func (_ChoiceOne_Pattern) isChoiceOneBranch()       {}
+func (_ChoiceOne_Bootstrapping) isChoiceOneBranch() {}
+func (_ChoiceOne_CodeGen) isChoiceOneBranch()       {}
 
 func Make_ChoiceOne_pattern(v Sumtype) ChoiceOne {
 	return ChoiceOne{
-		ChoiceOne_Pattern{v},
+		_ChoiceOne_Pattern{v},
 	}
 }
 
 func Make_ChoiceOne_bootstrapping(v []string) ChoiceOne {
 	return ChoiceOne{
-		ChoiceOne_Bootstrapping{v},
+		_ChoiceOne_Bootstrapping{v},
 	}
 }
 
 func Make_ChoiceOne_codeGen(v LangGen) ChoiceOne {
 	return ChoiceOne{
-		ChoiceOne_CodeGen{v},
+		_ChoiceOne_CodeGen{v},
 	}
 }
 
+func (un ChoiceOne) Cast_pattern() (Sumtype, bool) {
+	br, ok := un.Branch.(_ChoiceOne_Pattern)
+	return br.V, ok
+}
+
+func (un ChoiceOne) Cast_bootstrapping() ([]string, bool) {
+	br, ok := un.Branch.(_ChoiceOne_Bootstrapping)
+	return br.V, ok
+}
+
+func (un ChoiceOne) Cast_codeGen() (LangGen, bool) {
+	br, ok := un.Branch.(_ChoiceOne_CodeGen)
+	return br.V, ok
+}
+
 func Handle_ChoiceOne[T any](
-	_in ChoiceOneBranch,
+	_in ChoiceOne,
 	pattern func(pattern Sumtype) T,
 	bootstrapping func(bootstrapping []string) T,
 	codeGen func(codeGen LangGen) T,
 	_default func() T,
 ) T {
-	switch _b := _in.(type) {
-	case ChoiceOne_Pattern:
+	switch _b := _in.Branch.(type) {
+	case _ChoiceOne_Pattern:
 		if pattern != nil {
 			return pattern(_b.V)
 		}
-	case ChoiceOne_Bootstrapping:
+	case _ChoiceOne_Bootstrapping:
 		if bootstrapping != nil {
 			return bootstrapping(_b.V)
 		}
-	case ChoiceOne_CodeGen:
+	case _ChoiceOne_CodeGen:
 		if codeGen != nil {
 			return codeGen(_b.V)
 		}
@@ -85,22 +100,22 @@ func Handle_ChoiceOne[T any](
 }
 
 func HandleWithErr_ChoiceOne[T any](
-	_in ChoiceOneBranch,
+	_in ChoiceOne,
 	pattern func(pattern Sumtype) (T, error),
 	bootstrapping func(bootstrapping []string) (T, error),
 	codeGen func(codeGen LangGen) (T, error),
 	_default func() (T, error),
 ) (T, error) {
-	switch _b := _in.(type) {
-	case ChoiceOne_Pattern:
+	switch _b := _in.Branch.(type) {
+	case _ChoiceOne_Pattern:
 		if pattern != nil {
 			return pattern(_b.V)
 		}
-	case ChoiceOne_Bootstrapping:
+	case _ChoiceOne_Bootstrapping:
 		if bootstrapping != nil {
 			return bootstrapping(_b.V)
 		}
-	case ChoiceOne_CodeGen:
+	case _ChoiceOne_CodeGen:
 		if codeGen != nil {
 			return codeGen(_b.V)
 		}
@@ -112,17 +127,23 @@ func HandleWithErr_ChoiceOne[T any](
 }
 
 type CodeGen[L any] struct {
+	_CodeGen[L]
+}
+
+type _CodeGen[L any] struct {
 	Language  L                `json:"language"`
 	Technique CodeGenTechnique `json:"technique"`
 }
 
-func New_CodeGen[L any](
+func MakeAll_CodeGen[L any](
 	language L,
 	technique CodeGenTechnique,
 ) CodeGen[L] {
 	return CodeGen[L]{
-		Language:  language,
-		Technique: technique,
+		_CodeGen[L]{
+			Language:  language,
+			Technique: technique,
+		},
 	}
 }
 
@@ -131,8 +152,10 @@ func Make_CodeGen[L any](
 	technique CodeGenTechnique,
 ) CodeGen[L] {
 	ret := CodeGen[L]{
-		Language:  language,
-		Technique: technique,
+		_CodeGen[L]{
+			Language:  language,
+			Technique: technique,
+		},
 	}
 	return ret
 }
@@ -148,47 +171,57 @@ type CodeGenTechniqueBranch interface {
 func (*CodeGenTechnique) MakeNewBranch(key string) (any, error) {
 	switch key {
 	case "printf":
-		return &CodeGenTechnique_Printf{}, nil
+		return &_CodeGenTechnique_Printf{}, nil
 	case "templates":
-		return &CodeGenTechnique_Templates{}, nil
+		return &_CodeGenTechnique_Templates{}, nil
 	}
 	return nil, fmt.Errorf("unknown branch is : %s", key)
 }
 
-type CodeGenTechnique_Printf struct {
+type _CodeGenTechnique_Printf struct {
 	V struct{} `branch:"printf"`
 }
-type CodeGenTechnique_Templates struct {
+type _CodeGenTechnique_Templates struct {
 	V struct{} `branch:"templates"`
 }
 
-func (CodeGenTechnique_Printf) isCodeGenTechniqueBranch()    {}
-func (CodeGenTechnique_Templates) isCodeGenTechniqueBranch() {}
+func (_CodeGenTechnique_Printf) isCodeGenTechniqueBranch()    {}
+func (_CodeGenTechnique_Templates) isCodeGenTechniqueBranch() {}
 
-func Make_CodeGenTechnique_printf(v struct{}) CodeGenTechnique {
+func Make_CodeGenTechnique_printf() CodeGenTechnique {
 	return CodeGenTechnique{
-		CodeGenTechnique_Printf{v},
+		_CodeGenTechnique_Printf{struct{}{}},
 	}
 }
 
-func Make_CodeGenTechnique_templates(v struct{}) CodeGenTechnique {
+func Make_CodeGenTechnique_templates() CodeGenTechnique {
 	return CodeGenTechnique{
-		CodeGenTechnique_Templates{v},
+		_CodeGenTechnique_Templates{struct{}{}},
 	}
+}
+
+func (un CodeGenTechnique) Cast_printf() (struct{}, bool) {
+	br, ok := un.Branch.(_CodeGenTechnique_Printf)
+	return br.V, ok
+}
+
+func (un CodeGenTechnique) Cast_templates() (struct{}, bool) {
+	br, ok := un.Branch.(_CodeGenTechnique_Templates)
+	return br.V, ok
 }
 
 func Handle_CodeGenTechnique[T any](
-	_in CodeGenTechniqueBranch,
+	_in CodeGenTechnique,
 	printf func(printf struct{}) T,
 	templates func(templates struct{}) T,
 	_default func() T,
 ) T {
-	switch _b := _in.(type) {
-	case CodeGenTechnique_Printf:
+	switch _b := _in.Branch.(type) {
+	case _CodeGenTechnique_Printf:
 		if printf != nil {
 			return printf(_b.V)
 		}
-	case CodeGenTechnique_Templates:
+	case _CodeGenTechnique_Templates:
 		if templates != nil {
 			return templates(_b.V)
 		}
@@ -200,17 +233,17 @@ func Handle_CodeGenTechnique[T any](
 }
 
 func HandleWithErr_CodeGenTechnique[T any](
-	_in CodeGenTechniqueBranch,
+	_in CodeGenTechnique,
 	printf func(printf struct{}) (T, error),
 	templates func(templates struct{}) (T, error),
 	_default func() (T, error),
 ) (T, error) {
-	switch _b := _in.(type) {
-	case CodeGenTechnique_Printf:
+	switch _b := _in.Branch.(type) {
+	case _CodeGenTechnique_Printf:
 		if printf != nil {
 			return printf(_b.V)
 		}
-	case CodeGenTechnique_Templates:
+	case _CodeGenTechnique_Templates:
 		if templates != nil {
 			return templates(_b.V)
 		}
@@ -222,17 +255,23 @@ func HandleWithErr_CodeGenTechnique[T any](
 }
 
 type ExhaustiveSwitch[T any] struct {
+	_ExhaustiveSwitch[T]
+}
+
+type _ExhaustiveSwitch[T any] struct {
 	Sum_type Sumtype  `json:"sum_type"`
 	Impl     TypeSafe `json:"impl"`
 }
 
-func New_ExhaustiveSwitch[T any](
+func MakeAll_ExhaustiveSwitch[T any](
 	sum_type Sumtype,
 	impl TypeSafe,
 ) ExhaustiveSwitch[T] {
 	return ExhaustiveSwitch[T]{
-		Sum_type: sum_type,
-		Impl:     impl,
+		_ExhaustiveSwitch[T]{
+			Sum_type: sum_type,
+			Impl:     impl,
+		},
 	}
 }
 
@@ -241,8 +280,10 @@ func Make_ExhaustiveSwitch[T any](
 	impl TypeSafe,
 ) ExhaustiveSwitch[T] {
 	ret := ExhaustiveSwitch[T]{
-		Sum_type: sum_type,
-		Impl:     impl,
+		_ExhaustiveSwitch[T]{
+			Sum_type: sum_type,
+			Impl:     impl,
+		},
 	}
 	return ret
 }
@@ -260,85 +301,115 @@ type LanguageBranch interface {
 func (*Language) MakeNewBranch(key string) (any, error) {
 	switch key {
 	case "go_":
-		return &Language_Go_{}, nil
+		return &_Language_Go_{}, nil
 	case "ts":
-		return &Language_Ts{}, nil
+		return &_Language_Ts{}, nil
 	case "java":
-		return &Language_Java{}, nil
+		return &_Language_Java{}, nil
 	case "haskell":
-		return &Language_Haskell{}, nil
+		return &_Language_Haskell{}, nil
 	case "rust":
-		return &Language_Rust{}, nil
+		return &_Language_Rust{}, nil
 	case "cpp":
-		return &Language_Cpp{}, nil
+		return &_Language_Cpp{}, nil
 	}
 	return nil, fmt.Errorf("unknown branch is : %s", key)
 }
 
-type Language_Go_ struct {
+type _Language_Go_ struct {
 	V struct{} `branch:"go_"`
 }
-type Language_Ts struct {
+type _Language_Ts struct {
 	V struct{} `branch:"ts"`
 }
-type Language_Java struct {
+type _Language_Java struct {
 	V struct{} `branch:"java"`
 }
-type Language_Haskell struct {
+type _Language_Haskell struct {
 	V struct{} `branch:"haskell"`
 }
-type Language_Rust struct {
+type _Language_Rust struct {
 	V struct{} `branch:"rust"`
 }
-type Language_Cpp struct {
+type _Language_Cpp struct {
 	V struct{} `branch:"cpp"`
 }
 
-func (Language_Go_) isLanguageBranch()     {}
-func (Language_Ts) isLanguageBranch()      {}
-func (Language_Java) isLanguageBranch()    {}
-func (Language_Haskell) isLanguageBranch() {}
-func (Language_Rust) isLanguageBranch()    {}
-func (Language_Cpp) isLanguageBranch()     {}
+func (_Language_Go_) isLanguageBranch()     {}
+func (_Language_Ts) isLanguageBranch()      {}
+func (_Language_Java) isLanguageBranch()    {}
+func (_Language_Haskell) isLanguageBranch() {}
+func (_Language_Rust) isLanguageBranch()    {}
+func (_Language_Cpp) isLanguageBranch()     {}
 
-func Make_Language_go_(v struct{}) Language {
+func Make_Language_go_() Language {
 	return Language{
-		Language_Go_{v},
+		_Language_Go_{struct{}{}},
 	}
 }
 
-func Make_Language_ts(v struct{}) Language {
+func Make_Language_ts() Language {
 	return Language{
-		Language_Ts{v},
+		_Language_Ts{struct{}{}},
 	}
 }
 
-func Make_Language_java(v struct{}) Language {
+func Make_Language_java() Language {
 	return Language{
-		Language_Java{v},
+		_Language_Java{struct{}{}},
 	}
 }
 
-func Make_Language_haskell(v struct{}) Language {
+func Make_Language_haskell() Language {
 	return Language{
-		Language_Haskell{v},
+		_Language_Haskell{struct{}{}},
 	}
 }
 
-func Make_Language_rust(v struct{}) Language {
+func Make_Language_rust() Language {
 	return Language{
-		Language_Rust{v},
+		_Language_Rust{struct{}{}},
 	}
 }
 
-func Make_Language_cpp(v struct{}) Language {
+func Make_Language_cpp() Language {
 	return Language{
-		Language_Cpp{v},
+		_Language_Cpp{struct{}{}},
 	}
+}
+
+func (un Language) Cast_go_() (struct{}, bool) {
+	br, ok := un.Branch.(_Language_Go_)
+	return br.V, ok
+}
+
+func (un Language) Cast_ts() (struct{}, bool) {
+	br, ok := un.Branch.(_Language_Ts)
+	return br.V, ok
+}
+
+func (un Language) Cast_java() (struct{}, bool) {
+	br, ok := un.Branch.(_Language_Java)
+	return br.V, ok
+}
+
+func (un Language) Cast_haskell() (struct{}, bool) {
+	br, ok := un.Branch.(_Language_Haskell)
+	return br.V, ok
+}
+
+func (un Language) Cast_rust() (struct{}, bool) {
+	br, ok := un.Branch.(_Language_Rust)
+	return br.V, ok
+}
+
+func (un Language) Cast_cpp() (struct{}, bool) {
+	br, ok := un.Branch.(_Language_Cpp)
+	return br.V, ok
 }
 
 func Handle_Language[T any](
-	_in LanguageBranch,
+	_in Language,
 	go_ func(go_ struct{}) T,
 	ts func(ts struct{}) T,
 	java func(java struct{}) T,
@@ -347,28 +418,28 @@ func Handle_Language[T any](
 	cpp func(cpp struct{}) T,
 	_default func() T,
 ) T {
-	switch _b := _in.(type) {
-	case Language_Go_:
+	switch _b := _in.Branch.(type) {
+	case _Language_Go_:
 		if go_ != nil {
 			return go_(_b.V)
 		}
-	case Language_Ts:
+	case _Language_Ts:
 		if ts != nil {
 			return ts(_b.V)
 		}
-	case Language_Java:
+	case _Language_Java:
 		if java != nil {
 			return java(_b.V)
 		}
-	case Language_Haskell:
+	case _Language_Haskell:
 		if haskell != nil {
 			return haskell(_b.V)
 		}
-	case Language_Rust:
+	case _Language_Rust:
 		if rust != nil {
 			return rust(_b.V)
 		}
-	case Language_Cpp:
+	case _Language_Cpp:
 		if cpp != nil {
 			return cpp(_b.V)
 		}
@@ -380,7 +451,7 @@ func Handle_Language[T any](
 }
 
 func HandleWithErr_Language[T any](
-	_in LanguageBranch,
+	_in Language,
 	go_ func(go_ struct{}) (T, error),
 	ts func(ts struct{}) (T, error),
 	java func(java struct{}) (T, error),
@@ -389,28 +460,28 @@ func HandleWithErr_Language[T any](
 	cpp func(cpp struct{}) (T, error),
 	_default func() (T, error),
 ) (T, error) {
-	switch _b := _in.(type) {
-	case Language_Go_:
+	switch _b := _in.Branch.(type) {
+	case _Language_Go_:
 		if go_ != nil {
 			return go_(_b.V)
 		}
-	case Language_Ts:
+	case _Language_Ts:
 		if ts != nil {
 			return ts(_b.V)
 		}
-	case Language_Java:
+	case _Language_Java:
 		if java != nil {
 			return java(_b.V)
 		}
-	case Language_Haskell:
+	case _Language_Haskell:
 		if haskell != nil {
 			return haskell(_b.V)
 		}
-	case Language_Rust:
+	case _Language_Rust:
 		if rust != nil {
 			return rust(_b.V)
 		}
-	case Language_Cpp:
+	case _Language_Cpp:
 		if cpp != nil {
 			return cpp(_b.V)
 		}
@@ -424,24 +495,34 @@ func HandleWithErr_Language[T any](
 type Page = string
 
 type Step struct {
+	_Step
+}
+
+type _Step struct {
 	Description string `json:"description"`
 }
 
-func New_Step(
+func MakeAll_Step(
 	description string,
 ) Step {
 	return Step{
-		Description: description,
+		_Step{
+			Description: description,
+		},
 	}
 }
 
-func Make_Step(
-	description string,
-) Step {
+func Make_Step() Step {
 	ret := Step{
-		Description: description,
+		_Step{
+			Description: ((*Step)(nil)).Default_description(),
+		},
 	}
 	return ret
+}
+
+func (*Step) Default_description() string {
+	return "Hello World!"
 }
 
 type Sumtype struct {
@@ -455,81 +536,101 @@ type SumtypeBranch interface {
 func (*Sumtype) MakeNewBranch(key string) (any, error) {
 	switch key {
 	case "struct_of_pointers":
-		return &Sumtype_Struct_of_pointers{}, nil
+		return &_Sumtype_Struct_of_pointers{}, nil
 	case "disc_and_any":
-		return &Sumtype_Disc_and_any{}, nil
+		return &_Sumtype_Disc_and_any{}, nil
 	case "interface_with_private_method":
-		return &Sumtype_Interface_with_private_method{}, nil
+		return &_Sumtype_Interface_with_private_method{}, nil
 	case "type_safe":
-		return &Sumtype_Type_safe[Sumtype]{}, nil
+		return &_Sumtype_Type_safe[Sumtype]{}, nil
 	}
 	return nil, fmt.Errorf("unknown branch is : %s", key)
 }
 
-type Sumtype_Struct_of_pointers struct {
+type _Sumtype_Struct_of_pointers struct {
 	V struct{} `branch:"struct_of_pointers"`
 }
-type Sumtype_Disc_and_any struct {
+type _Sumtype_Disc_and_any struct {
 	V struct{} `branch:"disc_and_any"`
 }
-type Sumtype_Interface_with_private_method struct {
+type _Sumtype_Interface_with_private_method struct {
 	V struct{} `branch:"interface_with_private_method"`
 }
-type Sumtype_Type_safe[Sumtype any] struct {
+type _Sumtype_Type_safe[Sumtype any] struct {
 	V ExhaustiveSwitch[Sumtype] `branch:"type_safe"`
 }
 
-func (Sumtype_Struct_of_pointers) isSumtypeBranch()            {}
-func (Sumtype_Disc_and_any) isSumtypeBranch()                  {}
-func (Sumtype_Interface_with_private_method) isSumtypeBranch() {}
-func (Sumtype_Type_safe[Sumtype]) isSumtypeBranch()            {}
+func (_Sumtype_Struct_of_pointers) isSumtypeBranch()            {}
+func (_Sumtype_Disc_and_any) isSumtypeBranch()                  {}
+func (_Sumtype_Interface_with_private_method) isSumtypeBranch() {}
+func (_Sumtype_Type_safe[Sumtype]) isSumtypeBranch()            {}
 
-func Make_Sumtype_struct_of_pointers(v struct{}) Sumtype {
+func Make_Sumtype_struct_of_pointers() Sumtype {
 	return Sumtype{
-		Sumtype_Struct_of_pointers{v},
+		_Sumtype_Struct_of_pointers{struct{}{}},
 	}
 }
 
-func Make_Sumtype_disc_and_any(v struct{}) Sumtype {
+func Make_Sumtype_disc_and_any() Sumtype {
 	return Sumtype{
-		Sumtype_Disc_and_any{v},
+		_Sumtype_Disc_and_any{struct{}{}},
 	}
 }
 
-func Make_Sumtype_interface_with_private_method(v struct{}) Sumtype {
+func Make_Sumtype_interface_with_private_method() Sumtype {
 	return Sumtype{
-		Sumtype_Interface_with_private_method{v},
+		_Sumtype_Interface_with_private_method{struct{}{}},
 	}
 }
 
 func Make_Sumtype_type_safe(v ExhaustiveSwitch[Sumtype]) Sumtype {
 	return Sumtype{
-		Sumtype_Type_safe[Sumtype]{v},
+		_Sumtype_Type_safe[Sumtype]{v},
 	}
 }
 
+func (un Sumtype) Cast_struct_of_pointers() (struct{}, bool) {
+	br, ok := un.Branch.(_Sumtype_Struct_of_pointers)
+	return br.V, ok
+}
+
+func (un Sumtype) Cast_disc_and_any() (struct{}, bool) {
+	br, ok := un.Branch.(_Sumtype_Disc_and_any)
+	return br.V, ok
+}
+
+func (un Sumtype) Cast_interface_with_private_method() (struct{}, bool) {
+	br, ok := un.Branch.(_Sumtype_Interface_with_private_method)
+	return br.V, ok
+}
+
+func (un Sumtype) Cast_type_safe() (ExhaustiveSwitch[Sumtype], bool) {
+	br, ok := un.Branch.(_Sumtype_Type_safe[Sumtype])
+	return br.V, ok
+}
+
 func Handle_Sumtype[T any](
-	_in SumtypeBranch,
+	_in Sumtype,
 	struct_of_pointers func(struct_of_pointers struct{}) T,
 	disc_and_any func(disc_and_any struct{}) T,
 	interface_with_private_method func(interface_with_private_method struct{}) T,
 	type_safe func(type_safe ExhaustiveSwitch[Sumtype]) T,
 	_default func() T,
 ) T {
-	switch _b := _in.(type) {
-	case Sumtype_Struct_of_pointers:
+	switch _b := _in.Branch.(type) {
+	case _Sumtype_Struct_of_pointers:
 		if struct_of_pointers != nil {
 			return struct_of_pointers(_b.V)
 		}
-	case Sumtype_Disc_and_any:
+	case _Sumtype_Disc_and_any:
 		if disc_and_any != nil {
 			return disc_and_any(_b.V)
 		}
-	case Sumtype_Interface_with_private_method:
+	case _Sumtype_Interface_with_private_method:
 		if interface_with_private_method != nil {
 			return interface_with_private_method(_b.V)
 		}
-	case Sumtype_Type_safe[Sumtype]:
+	case _Sumtype_Type_safe[Sumtype]:
 		if type_safe != nil {
 			return type_safe(_b.V)
 		}
@@ -541,27 +642,27 @@ func Handle_Sumtype[T any](
 }
 
 func HandleWithErr_Sumtype[T any](
-	_in SumtypeBranch,
+	_in Sumtype,
 	struct_of_pointers func(struct_of_pointers struct{}) (T, error),
 	disc_and_any func(disc_and_any struct{}) (T, error),
 	interface_with_private_method func(interface_with_private_method struct{}) (T, error),
 	type_safe func(type_safe ExhaustiveSwitch[Sumtype]) (T, error),
 	_default func() (T, error),
 ) (T, error) {
-	switch _b := _in.(type) {
-	case Sumtype_Struct_of_pointers:
+	switch _b := _in.Branch.(type) {
+	case _Sumtype_Struct_of_pointers:
 		if struct_of_pointers != nil {
 			return struct_of_pointers(_b.V)
 		}
-	case Sumtype_Disc_and_any:
+	case _Sumtype_Disc_and_any:
 		if disc_and_any != nil {
 			return disc_and_any(_b.V)
 		}
-	case Sumtype_Interface_with_private_method:
+	case _Sumtype_Interface_with_private_method:
 		if interface_with_private_method != nil {
 			return interface_with_private_method(_b.V)
 		}
-	case Sumtype_Type_safe[Sumtype]:
+	case _Sumtype_Type_safe[Sumtype]:
 		if type_safe != nil {
 			return type_safe(_b.V)
 		}
@@ -583,30 +684,35 @@ type TypeSafeBranch interface {
 func (*TypeSafe) MakeNewBranch(key string) (any, error) {
 	switch key {
 	case "callback":
-		return &TypeSafe_Callback{}, nil
+		return &_TypeSafe_Callback{}, nil
 	}
 	return nil, fmt.Errorf("unknown branch is : %s", key)
 }
 
-type TypeSafe_Callback struct {
+type _TypeSafe_Callback struct {
 	V struct{} `branch:"callback"`
 }
 
-func (TypeSafe_Callback) isTypeSafeBranch() {}
+func (_TypeSafe_Callback) isTypeSafeBranch() {}
 
-func Make_TypeSafe_callback(v struct{}) TypeSafe {
+func Make_TypeSafe_callback() TypeSafe {
 	return TypeSafe{
-		TypeSafe_Callback{v},
+		_TypeSafe_Callback{struct{}{}},
 	}
 }
 
+func (un TypeSafe) Cast_callback() (struct{}, bool) {
+	br, ok := un.Branch.(_TypeSafe_Callback)
+	return br.V, ok
+}
+
 func Handle_TypeSafe[T any](
-	_in TypeSafeBranch,
+	_in TypeSafe,
 	callback func(callback struct{}) T,
 	_default func() T,
 ) T {
-	switch _b := _in.(type) {
-	case TypeSafe_Callback:
+	switch _b := _in.Branch.(type) {
+	case _TypeSafe_Callback:
 		if callback != nil {
 			return callback(_b.V)
 		}
@@ -618,12 +724,12 @@ func Handle_TypeSafe[T any](
 }
 
 func HandleWithErr_TypeSafe[T any](
-	_in TypeSafeBranch,
+	_in TypeSafe,
 	callback func(callback struct{}) (T, error),
 	_default func() (T, error),
 ) (T, error) {
-	switch _b := _in.(type) {
-	case TypeSafe_Callback:
+	switch _b := _in.Branch.(type) {
+	case _TypeSafe_Callback:
 		if callback != nil {
 			return callback(_b.V)
 		}

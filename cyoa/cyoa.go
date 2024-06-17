@@ -16,64 +16,79 @@ type ChoiceThreeBranch[A any, B any, C any] interface {
 func (*ChoiceThree[A, B, C]) MakeNewBranch(key string) (any, error) {
 	switch key {
 	case "one":
-		return &ChoiceThree_One[A]{}, nil
+		return &_ChoiceThree_One[A]{}, nil
 	case "two":
-		return &ChoiceThree_Two[B]{}, nil
+		return &_ChoiceThree_Two[B]{}, nil
 	case "tri":
-		return &ChoiceThree_Tri[C]{}, nil
+		return &_ChoiceThree_Tri[C]{}, nil
 	}
 	return nil, fmt.Errorf("unknown branch is : %s", key)
 }
 
-type ChoiceThree_One[A any] struct {
+type _ChoiceThree_One[A any] struct {
 	V A `branch:"one"`
 }
-type ChoiceThree_Two[B any] struct {
+type _ChoiceThree_Two[B any] struct {
 	V B `branch:"two"`
 }
-type ChoiceThree_Tri[C any] struct {
+type _ChoiceThree_Tri[C any] struct {
 	V C `branch:"tri"`
 }
 
-func (ChoiceThree_One[A]) isChoiceThreeBranch() {}
-func (ChoiceThree_Two[B]) isChoiceThreeBranch() {}
-func (ChoiceThree_Tri[C]) isChoiceThreeBranch() {}
+func (_ChoiceThree_One[A]) isChoiceThreeBranch() {}
+func (_ChoiceThree_Two[B]) isChoiceThreeBranch() {}
+func (_ChoiceThree_Tri[C]) isChoiceThreeBranch() {}
 
 func Make_ChoiceThree_one[A any, B any, C any](v A) ChoiceThree[A, B, C] {
 	return ChoiceThree[A, B, C]{
-		ChoiceThree_One[A]{v},
+		_ChoiceThree_One[A]{v},
 	}
 }
 
 func Make_ChoiceThree_two[A any, B any, C any](v B) ChoiceThree[A, B, C] {
 	return ChoiceThree[A, B, C]{
-		ChoiceThree_Two[B]{v},
+		_ChoiceThree_Two[B]{v},
 	}
 }
 
 func Make_ChoiceThree_tri[A any, B any, C any](v C) ChoiceThree[A, B, C] {
 	return ChoiceThree[A, B, C]{
-		ChoiceThree_Tri[C]{v},
+		_ChoiceThree_Tri[C]{v},
 	}
 }
 
+func (un ChoiceThree[A, B, C]) Cast_one() (A, bool) {
+	br, ok := un.Branch.(_ChoiceThree_One[A])
+	return br.V, ok
+}
+
+func (un ChoiceThree[A, B, C]) Cast_two() (B, bool) {
+	br, ok := un.Branch.(_ChoiceThree_Two[B])
+	return br.V, ok
+}
+
+func (un ChoiceThree[A, B, C]) Cast_tri() (C, bool) {
+	br, ok := un.Branch.(_ChoiceThree_Tri[C])
+	return br.V, ok
+}
+
 func Handle_ChoiceThree[A any, B any, C any, T any](
-	_in ChoiceThreeBranch[A, B, C],
+	_in ChoiceThree[A, B, C],
 	one func(one A) T,
 	two func(two B) T,
 	tri func(tri C) T,
 	_default func() T,
 ) T {
-	switch _b := _in.(type) {
-	case ChoiceThree_One[A]:
+	switch _b := _in.Branch.(type) {
+	case _ChoiceThree_One[A]:
 		if one != nil {
 			return one(_b.V)
 		}
-	case ChoiceThree_Two[B]:
+	case _ChoiceThree_Two[B]:
 		if two != nil {
 			return two(_b.V)
 		}
-	case ChoiceThree_Tri[C]:
+	case _ChoiceThree_Tri[C]:
 		if tri != nil {
 			return tri(_b.V)
 		}
@@ -85,22 +100,22 @@ func Handle_ChoiceThree[A any, B any, C any, T any](
 }
 
 func HandleWithErr_ChoiceThree[A any, B any, C any, T any](
-	_in ChoiceThreeBranch[A, B, C],
+	_in ChoiceThree[A, B, C],
 	one func(one A) (T, error),
 	two func(two B) (T, error),
 	tri func(tri C) (T, error),
 	_default func() (T, error),
 ) (T, error) {
-	switch _b := _in.(type) {
-	case ChoiceThree_One[A]:
+	switch _b := _in.Branch.(type) {
+	case _ChoiceThree_One[A]:
 		if one != nil {
 			return one(_b.V)
 		}
-	case ChoiceThree_Two[B]:
+	case _ChoiceThree_Two[B]:
 		if two != nil {
 			return two(_b.V)
 		}
-	case ChoiceThree_Tri[C]:
+	case _ChoiceThree_Tri[C]:
 		if tri != nil {
 			return tri(_b.V)
 		}
@@ -122,47 +137,57 @@ type ChoiceTwoBranch[A any, B any] interface {
 func (*ChoiceTwo[A, B]) MakeNewBranch(key string) (any, error) {
 	switch key {
 	case "one":
-		return &ChoiceTwo_One[A]{}, nil
+		return &_ChoiceTwo_One[A]{}, nil
 	case "two":
-		return &ChoiceTwo_Two[B]{}, nil
+		return &_ChoiceTwo_Two[B]{}, nil
 	}
 	return nil, fmt.Errorf("unknown branch is : %s", key)
 }
 
-type ChoiceTwo_One[A any] struct {
+type _ChoiceTwo_One[A any] struct {
 	V A `branch:"one"`
 }
-type ChoiceTwo_Two[B any] struct {
+type _ChoiceTwo_Two[B any] struct {
 	V B `branch:"two"`
 }
 
-func (ChoiceTwo_One[A]) isChoiceTwoBranch() {}
-func (ChoiceTwo_Two[B]) isChoiceTwoBranch() {}
+func (_ChoiceTwo_One[A]) isChoiceTwoBranch() {}
+func (_ChoiceTwo_Two[B]) isChoiceTwoBranch() {}
 
 func Make_ChoiceTwo_one[A any, B any](v A) ChoiceTwo[A, B] {
 	return ChoiceTwo[A, B]{
-		ChoiceTwo_One[A]{v},
+		_ChoiceTwo_One[A]{v},
 	}
 }
 
 func Make_ChoiceTwo_two[A any, B any](v B) ChoiceTwo[A, B] {
 	return ChoiceTwo[A, B]{
-		ChoiceTwo_Two[B]{v},
+		_ChoiceTwo_Two[B]{v},
 	}
 }
 
+func (un ChoiceTwo[A, B]) Cast_one() (A, bool) {
+	br, ok := un.Branch.(_ChoiceTwo_One[A])
+	return br.V, ok
+}
+
+func (un ChoiceTwo[A, B]) Cast_two() (B, bool) {
+	br, ok := un.Branch.(_ChoiceTwo_Two[B])
+	return br.V, ok
+}
+
 func Handle_ChoiceTwo[A any, B any, T any](
-	_in ChoiceTwoBranch[A, B],
+	_in ChoiceTwo[A, B],
 	one func(one A) T,
 	two func(two B) T,
 	_default func() T,
 ) T {
-	switch _b := _in.(type) {
-	case ChoiceTwo_One[A]:
+	switch _b := _in.Branch.(type) {
+	case _ChoiceTwo_One[A]:
 		if one != nil {
 			return one(_b.V)
 		}
-	case ChoiceTwo_Two[B]:
+	case _ChoiceTwo_Two[B]:
 		if two != nil {
 			return two(_b.V)
 		}
@@ -174,17 +199,17 @@ func Handle_ChoiceTwo[A any, B any, T any](
 }
 
 func HandleWithErr_ChoiceTwo[A any, B any, T any](
-	_in ChoiceTwoBranch[A, B],
+	_in ChoiceTwo[A, B],
 	one func(one A) (T, error),
 	two func(two B) (T, error),
 	_default func() (T, error),
 ) (T, error) {
-	switch _b := _in.(type) {
-	case ChoiceTwo_One[A]:
+	switch _b := _in.Branch.(type) {
+	case _ChoiceTwo_One[A]:
 		if one != nil {
 			return one(_b.V)
 		}
-	case ChoiceTwo_Two[B]:
+	case _ChoiceTwo_Two[B]:
 		if two != nil {
 			return two(_b.V)
 		}
@@ -206,64 +231,79 @@ type PageBranch[A any, B any, C any] interface {
 func (*Page[A, B, C]) MakeNewBranch(key string) (any, error) {
 	switch key {
 	case "next_page":
-		return &Page_Next_page{}, nil
+		return &_Page_Next_page{}, nil
 	case "two":
-		return &Page_Two[A, B]{}, nil
+		return &_Page_Two[A, B]{}, nil
 	case "tri":
-		return &Page_Tri[A, B, C]{}, nil
+		return &_Page_Tri[A, B, C]{}, nil
 	}
 	return nil, fmt.Errorf("unknown branch is : %s", key)
 }
 
-type Page_Next_page struct {
+type _Page_Next_page struct {
 	V struct{} `branch:"next_page"`
 }
-type Page_Two[A any, B any] struct {
+type _Page_Two[A any, B any] struct {
 	V ChoiceTwo[A, B] `branch:"two"`
 }
-type Page_Tri[A any, B any, C any] struct {
+type _Page_Tri[A any, B any, C any] struct {
 	V ChoiceThree[A, B, C] `branch:"tri"`
 }
 
-func (Page_Next_page) isPageBranch()    {}
-func (Page_Two[A, B]) isPageBranch()    {}
-func (Page_Tri[A, B, C]) isPageBranch() {}
+func (_Page_Next_page) isPageBranch()    {}
+func (_Page_Two[A, B]) isPageBranch()    {}
+func (_Page_Tri[A, B, C]) isPageBranch() {}
 
-func Make_Page_next_page[A any, B any, C any](v struct{}) Page[A, B, C] {
+func Make_Page_next_page[A any, B any, C any]() Page[A, B, C] {
 	return Page[A, B, C]{
-		Page_Next_page{v},
+		_Page_Next_page{struct{}{}},
 	}
 }
 
 func Make_Page_two[A any, B any, C any](v ChoiceTwo[A, B]) Page[A, B, C] {
 	return Page[A, B, C]{
-		Page_Two[A, B]{v},
+		_Page_Two[A, B]{v},
 	}
 }
 
 func Make_Page_tri[A any, B any, C any](v ChoiceThree[A, B, C]) Page[A, B, C] {
 	return Page[A, B, C]{
-		Page_Tri[A, B, C]{v},
+		_Page_Tri[A, B, C]{v},
 	}
 }
 
+func (un Page[A, B, C]) Cast_next_page() (struct{}, bool) {
+	br, ok := un.Branch.(_Page_Next_page)
+	return br.V, ok
+}
+
+func (un Page[A, B, C]) Cast_two() (ChoiceTwo[A, B], bool) {
+	br, ok := un.Branch.(_Page_Two[A, B])
+	return br.V, ok
+}
+
+func (un Page[A, B, C]) Cast_tri() (ChoiceThree[A, B, C], bool) {
+	br, ok := un.Branch.(_Page_Tri[A, B, C])
+	return br.V, ok
+}
+
 func Handle_Page[A any, B any, C any, T any](
-	_in PageBranch[A, B, C],
+	_in Page[A, B, C],
 	next_page func(next_page struct{}) T,
 	two func(two ChoiceTwo[A, B]) T,
 	tri func(tri ChoiceThree[A, B, C]) T,
 	_default func() T,
 ) T {
-	switch _b := _in.(type) {
-	case Page_Next_page:
+	switch _b := _in.Branch.(type) {
+	case _Page_Next_page:
 		if next_page != nil {
 			return next_page(_b.V)
 		}
-	case Page_Two[A, B]:
+	case _Page_Two[A, B]:
 		if two != nil {
 			return two(_b.V)
 		}
-	case Page_Tri[A, B, C]:
+	case _Page_Tri[A, B, C]:
 		if tri != nil {
 			return tri(_b.V)
 		}
@@ -275,22 +315,22 @@ func Handle_Page[A any, B any, C any, T any](
 }
 
 func HandleWithErr_Page[A any, B any, C any, T any](
-	_in PageBranch[A, B, C],
+	_in Page[A, B, C],
 	next_page func(next_page struct{}) (T, error),
 	two func(two ChoiceTwo[A, B]) (T, error),
 	tri func(tri ChoiceThree[A, B, C]) (T, error),
 	_default func() (T, error),
 ) (T, error) {
-	switch _b := _in.(type) {
-	case Page_Next_page:
+	switch _b := _in.Branch.(type) {
+	case _Page_Next_page:
 		if next_page != nil {
 			return next_page(_b.V)
 		}
-	case Page_Two[A, B]:
+	case _Page_Two[A, B]:
 		if two != nil {
 			return two(_b.V)
 		}
-	case Page_Tri[A, B, C]:
+	case _Page_Tri[A, B, C]:
 		if tri != nil {
 			return tri(_b.V)
 		}

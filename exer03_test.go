@@ -10,6 +10,7 @@ import (
 	"adl_testing/diff"
 
 	goadl "github.com/adl-lang/goadl_rt/v3"
+	"github.com/adl-lang/goadl_rt/v3/sys/adlast"
 	"github.com/davecgh/go-spew/spew"
 )
 
@@ -27,12 +28,12 @@ func TestGenericEncode(t *testing.T) {
 	// 	D: generics.Make_Def_a[int64, string](3),
 	// }
 	out := &bytes.Buffer{}
-	enc := goadl.CreateJsonEncodeBinding(generics.Texpr_Abc(goadl.Texpr_Int64(), goadl.Texpr_String()), goadl.RESOLVER)
+	enc := goadl.CreateJsonEncodeBinding(generics.Texpr_Abc(adlast.Texpr_Int64(), adlast.Texpr_String()), goadl.RESOLVER)
 	err := enc.Encode(out, x)
 	if err != nil {
 		t.Errorf("%v", err)
 	}
-	dec := goadl.CreateJsonDecodeBinding(generics.Texpr_Abc(goadl.Texpr_Int64(), goadl.Texpr_String()), goadl.RESOLVER)
+	dec := goadl.CreateJsonDecodeBinding(generics.Texpr_Abc(adlast.Texpr_Int64(), adlast.Texpr_String()), goadl.RESOLVER)
 	var y generics.Abc[int64, string]
 	err = dec.Decode(out, &y)
 	if err != nil {

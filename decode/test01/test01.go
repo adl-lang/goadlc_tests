@@ -12,14 +12,20 @@ import (
 type A int64
 
 type B struct {
+	_B
+}
+
+type _B struct {
 	A int64 `json:"a"`
 }
 
-func New_B(
+func MakeAll_B(
 	a int64,
 ) B {
 	return B{
-		A: a,
+		_B{
+			A: a,
+		},
 	}
 }
 
@@ -27,20 +33,28 @@ func Make_B(
 	a int64,
 ) B {
 	ret := B{
-		A: a,
+		_B{
+			A: a,
+		},
 	}
 	return ret
 }
 
 type Bool struct {
+	_Bool
+}
+
+type _Bool struct {
 	A bool `json:"a"`
 }
 
-func New_Bool(
+func MakeAll_Bool(
 	a bool,
 ) Bool {
 	return Bool{
-		A: a,
+		_Bool{
+			A: a,
+		},
 	}
 }
 
@@ -48,35 +62,50 @@ func Make_Bool(
 	a bool,
 ) Bool {
 	ret := Bool{
-		A: a,
+		_Bool{
+			A: a,
+		},
 	}
 	return ret
 }
 
 type C struct {
+	_C
+}
+
+type _C struct {
 	B B `json:"b"`
 	C B `json:"c"`
 }
 
-func New_C(
+func MakeAll_C(
 	b B,
 	c B,
 ) C {
 	return C{
-		B: b,
-		C: c,
+		_C{
+			B: b,
+			C: c,
+		},
 	}
 }
 
 func Make_C(
-	b B,
 	c B,
 ) C {
 	ret := C{
-		B: b,
-		C: c,
+		_C{
+			B: ((*C)(nil)).Default_b(),
+			C: c,
+		},
 	}
 	return ret
+}
+
+func (*C) Default_b() B {
+	return MakeAll_B(
+		1234,
+	)
 }
 
 type D struct {
@@ -90,47 +119,57 @@ type DBranch interface {
 func (*D) MakeNewBranch(key string) (any, error) {
 	switch key {
 	case "a":
-		return &D_A{}, nil
+		return &_D_A{}, nil
 	case "b":
-		return &D_B{}, nil
+		return &_D_B{}, nil
 	}
 	return nil, fmt.Errorf("unknown branch is : %s", key)
 }
 
-type D_A struct {
+type _D_A struct {
 	V int64 `branch:"a"`
 }
-type D_B struct {
+type _D_B struct {
 	V B `branch:"b"`
 }
 
-func (D_A) isDBranch() {}
-func (D_B) isDBranch() {}
+func (_D_A) isDBranch() {}
+func (_D_B) isDBranch() {}
 
 func Make_D_a(v int64) D {
 	return D{
-		D_A{v},
+		_D_A{v},
 	}
 }
 
 func Make_D_b(v B) D {
 	return D{
-		D_B{v},
+		_D_B{v},
 	}
 }
 
+func (un D) Cast_a() (int64, bool) {
+	br, ok := un.Branch.(_D_A)
+	return br.V, ok
+}
+
+func (un D) Cast_b() (B, bool) {
+	br, ok := un.Branch.(_D_B)
+	return br.V, ok
+}
+
 func Handle_D[T any](
-	_in DBranch,
+	_in D,
 	a func(a int64) T,
 	b func(b B) T,
 	_default func() T,
 ) T {
-	switch _b := _in.(type) {
-	case D_A:
+	switch _b := _in.Branch.(type) {
+	case _D_A:
 		if a != nil {
 			return a(_b.V)
 		}
-	case D_B:
+	case _D_B:
 		if b != nil {
 			return b(_b.V)
 		}
@@ -142,17 +181,17 @@ func Handle_D[T any](
 }
 
 func HandleWithErr_D[T any](
-	_in DBranch,
+	_in D,
 	a func(a int64) (T, error),
 	b func(b B) (T, error),
 	_default func() (T, error),
 ) (T, error) {
-	switch _b := _in.(type) {
-	case D_A:
+	switch _b := _in.Branch.(type) {
+	case _D_A:
 		if a != nil {
 			return a(_b.V)
 		}
-	case D_B:
+	case _D_B:
 		if b != nil {
 			return b(_b.V)
 		}
@@ -164,14 +203,20 @@ func HandleWithErr_D[T any](
 }
 
 type E struct {
+	_E
+}
+
+type _E struct {
 	D D `json:"d"`
 }
 
-func New_E(
+func MakeAll_E(
 	d D,
 ) E {
 	return E{
-		D: d,
+		_E{
+			D: d,
+		},
 	}
 }
 
@@ -179,12 +224,18 @@ func Make_E(
 	d D,
 ) E {
 	ret := E{
-		D: d,
+		_E{
+			D: d,
+		},
 	}
 	return ret
 }
 
 type F struct {
+	_F
+}
+
+type _F struct {
 	A int8             `json:"a"`
 	B int16            `json:"b"`
 	C int32            `json:"c"`
@@ -204,7 +255,7 @@ type F struct {
 	R struct{}         `json:"r"`
 }
 
-func New_F(
+func MakeAll_F(
 	a int8,
 	b int16,
 	c int32,
@@ -221,26 +272,27 @@ func New_F(
 	o []int64,
 	p map[string]int64,
 	q *int64,
-	r struct{},
 ) F {
 	return F{
-		A: a,
-		B: b,
-		C: c,
-		D: d,
-		E: e,
-		F: f,
-		G: g,
-		H: h,
-		I: i,
-		J: j,
-		K: k,
-		L: l,
-		N: n,
-		O: o,
-		P: p,
-		Q: q,
-		R: r,
+		_F{
+			A: a,
+			B: b,
+			C: c,
+			D: d,
+			E: e,
+			F: f,
+			G: g,
+			H: h,
+			I: i,
+			J: j,
+			K: k,
+			L: l,
+			N: n,
+			O: o,
+			P: p,
+			Q: q,
+			R: struct{}{},
+		},
 	}
 }
 
@@ -261,39 +313,46 @@ func Make_F(
 	o []int64,
 	p map[string]int64,
 	q *int64,
-	r struct{},
 ) F {
 	ret := F{
-		A: a,
-		B: b,
-		C: c,
-		D: d,
-		E: e,
-		F: f,
-		G: g,
-		H: h,
-		I: i,
-		J: j,
-		K: k,
-		L: l,
-		N: n,
-		O: o,
-		P: p,
-		Q: q,
-		R: r,
+		_F{
+			A: a,
+			B: b,
+			C: c,
+			D: d,
+			E: e,
+			F: f,
+			G: g,
+			H: h,
+			I: i,
+			J: j,
+			K: k,
+			L: l,
+			N: n,
+			O: o,
+			P: p,
+			Q: q,
+			R: struct{}{},
+		},
 	}
 	return ret
 }
 
 type G struct {
+	_G
+}
+
+type _G struct {
 	A []G `json:"a"`
 }
 
-func New_G(
+func MakeAll_G(
 	a []G,
 ) G {
 	return G{
-		A: a,
+		_G{
+			A: a,
+		},
 	}
 }
 
@@ -301,20 +360,28 @@ func Make_G(
 	a []G,
 ) G {
 	ret := G{
-		A: a,
+		_G{
+			A: a,
+		},
 	}
 	return ret
 }
 
 type GenericF[AA any] struct {
+	_GenericF[AA]
+}
+
+type _GenericF[AA any] struct {
 	A AA `json:"a"`
 }
 
-func New_GenericF[AA any](
+func MakeAll_GenericF[AA any](
 	a AA,
 ) GenericF[AA] {
 	return GenericF[AA]{
-		A: a,
+		_GenericF[AA]{
+			A: a,
+		},
 	}
 }
 
@@ -322,26 +389,36 @@ func Make_GenericF[AA any](
 	a AA,
 ) GenericF[AA] {
 	ret := GenericF[AA]{
-		A: a,
+		_GenericF[AA]{
+			A: a,
+		},
 	}
 	return ret
 }
 
 type HasDefault struct {
+	_HasDefault
+}
+
+type _HasDefault struct {
 	A string `json:"a"`
 }
 
-func New_HasDefault(
+func MakeAll_HasDefault(
 	a string,
 ) HasDefault {
 	return HasDefault{
-		A: a,
+		_HasDefault{
+			A: a,
+		},
 	}
 }
 
 func Make_HasDefault() HasDefault {
 	ret := HasDefault{
-		A: ((*HasDefault)(nil)).Default_a(),
+		_HasDefault{
+			A: ((*HasDefault)(nil)).Default_a(),
+		},
 	}
 	return ret
 }
@@ -351,14 +428,20 @@ func (*HasDefault) Default_a() string {
 }
 
 type Int struct {
+	_Int
+}
+
+type _Int struct {
 	A int8 `json:"a"`
 }
 
-func New_Int(
+func MakeAll_Int(
 	a int8,
 ) Int {
 	return Int{
-		A: a,
+		_Int{
+			A: a,
+		},
 	}
 }
 
@@ -366,20 +449,28 @@ func Make_Int(
 	a int8,
 ) Int {
 	ret := Int{
-		A: a,
+		_Int{
+			A: a,
+		},
 	}
 	return ret
 }
 
 type Json struct {
+	_Json
+}
+
+type _Json struct {
 	A any `json:"a"`
 }
 
-func New_Json(
+func MakeAll_Json(
 	a any,
 ) Json {
 	return Json{
-		A: a,
+		_Json{
+			A: a,
+		},
 	}
 }
 
@@ -387,26 +478,36 @@ func Make_Json(
 	a any,
 ) Json {
 	ret := Json{
-		A: a,
+		_Json{
+			A: a,
+		},
 	}
 	return ret
 }
 
 type MapTest struct {
+	_MapTest
+}
+
+type _MapTest struct {
 	My_set customtypes.MapMap[string, int64] `json:"my_set"`
 }
 
-func New_MapTest(
+func MakeAll_MapTest(
 	my_set customtypes.MapMap[string, int64],
 ) MapTest {
 	return MapTest{
-		My_set: my_set,
+		_MapTest{
+			My_set: my_set,
+		},
 	}
 }
 
 func Make_MapTest() MapTest {
 	ret := MapTest{
-		My_set: ((*MapTest)(nil)).Default_my_set(),
+		_MapTest{
+			My_set: ((*MapTest)(nil)).Default_my_set(),
+		},
 	}
 	return ret
 }
@@ -416,11 +517,11 @@ func (*MapTest) Default_my_set() customtypes.MapMap[string, int64] {
 		&customtypes.MapMap[string, int64]{},
 		[]interface{}{map[string]interface{}{"k": "a", "v": 1}},
 		goadl.CreateUncheckedJsonDecodeBinding(
-			adlast.TypeExpr{TypeRef: adlast.TypeRef{Branch: adlast.TypeRef_Primitive{V: "String"}}, Parameters: []adlast.TypeExpr{}},
+			adlast.Make_TypeExpr(adlast.Make_TypeRef_primitive("String"), []adlast.TypeExpr{}),
 			goadl.RESOLVER,
 		).Binder(),
 		goadl.CreateUncheckedJsonDecodeBinding(
-			adlast.TypeExpr{TypeRef: adlast.TypeRef{Branch: adlast.TypeRef_Primitive{V: "Int64"}}, Parameters: []adlast.TypeExpr{}},
+			adlast.Make_TypeExpr(adlast.Make_TypeRef_primitive("Int64"), []adlast.TypeExpr{}),
 			goadl.RESOLVER,
 		).Binder(),
 	)).(customtypes.MapMap[string, int64])
@@ -429,14 +530,20 @@ func (*MapTest) Default_my_set() customtypes.MapMap[string, int64] {
 type MyV[A any] []A
 
 type NoDefault struct {
+	_NoDefault
+}
+
+type _NoDefault struct {
 	A string `json:"a"`
 }
 
-func New_NoDefault(
+func MakeAll_NoDefault(
 	a string,
 ) NoDefault {
 	return NoDefault{
-		A: a,
+		_NoDefault{
+			A: a,
+		},
 	}
 }
 
@@ -444,20 +551,28 @@ func Make_NoDefault(
 	a string,
 ) NoDefault {
 	ret := NoDefault{
-		A: a,
+		_NoDefault{
+			A: a,
+		},
 	}
 	return ret
 }
 
 type NullableString struct {
+	_NullableString
+}
+
+type _NullableString struct {
 	A *string `json:"a"`
 }
 
-func New_NullableString(
+func MakeAll_NullableString(
 	a *string,
 ) NullableString {
 	return NullableString{
-		A: a,
+		_NullableString{
+			A: a,
+		},
 	}
 }
 
@@ -465,26 +580,36 @@ func Make_NullableString(
 	a *string,
 ) NullableString {
 	ret := NullableString{
-		A: a,
+		_NullableString{
+			A: a,
+		},
 	}
 	return ret
 }
 
 type SetTest struct {
+	_SetTest
+}
+
+type _SetTest struct {
 	My_set customtypes.MapSet[string] `json:"my_set"`
 }
 
-func New_SetTest(
+func MakeAll_SetTest(
 	my_set customtypes.MapSet[string],
 ) SetTest {
 	return SetTest{
-		My_set: my_set,
+		_SetTest{
+			My_set: my_set,
+		},
 	}
 }
 
 func Make_SetTest() SetTest {
 	ret := SetTest{
-		My_set: ((*SetTest)(nil)).Default_my_set(),
+		_SetTest{
+			My_set: ((*SetTest)(nil)).Default_my_set(),
+		},
 	}
 	return ret
 }
@@ -494,21 +619,27 @@ func (*SetTest) Default_my_set() customtypes.MapSet[string] {
 		&customtypes.MapSet[string]{},
 		[]interface{}{"a", "b", "z"},
 		goadl.CreateUncheckedJsonDecodeBinding(
-			adlast.TypeExpr{TypeRef: adlast.TypeRef{Branch: adlast.TypeRef_Primitive{V: "String"}}, Parameters: []adlast.TypeExpr{}},
+			adlast.Make_TypeExpr(adlast.Make_TypeRef_primitive("String"), []adlast.TypeExpr{}),
 			goadl.RESOLVER,
 		).Binder(),
 	)).(customtypes.MapSet[string])
 }
 
 type StringMapString struct {
+	_StringMapString
+}
+
+type _StringMapString struct {
 	A map[string]string `json:"a"`
 }
 
-func New_StringMapString(
+func MakeAll_StringMapString(
 	a map[string]string,
 ) StringMapString {
 	return StringMapString{
-		A: a,
+		_StringMapString{
+			A: a,
+		},
 	}
 }
 
@@ -516,20 +647,28 @@ func Make_StringMapString(
 	a map[string]string,
 ) StringMapString {
 	ret := StringMapString{
-		A: a,
+		_StringMapString{
+			A: a,
+		},
 	}
 	return ret
 }
 
 type Uint struct {
+	_Uint
+}
+
+type _Uint struct {
 	A uint16 `json:"a"`
 }
 
-func New_Uint(
+func MakeAll_Uint(
 	a uint16,
 ) Uint {
 	return Uint{
-		A: a,
+		_Uint{
+			A: a,
+		},
 	}
 }
 
@@ -537,32 +676,48 @@ func Make_Uint(
 	a uint16,
 ) Uint {
 	ret := Uint{
-		A: a,
+		_Uint{
+			A: a,
+		},
 	}
 	return ret
 }
 
 type Unit struct {
+	_Unit
 }
 
-func New_Unit() Unit {
-	return Unit{}
+type _Unit struct {
+}
+
+func MakeAll_Unit() Unit {
+	return Unit{
+		_Unit{},
+	}
 }
 
 func Make_Unit() Unit {
-	ret := Unit{}
+	ret := Unit{
+		_Unit{},
+	}
 	return ret
 }
 
 type VectorString struct {
+	_VectorString
+}
+
+type _VectorString struct {
 	A []string `json:"a"`
 }
 
-func New_VectorString(
+func MakeAll_VectorString(
 	a []string,
 ) VectorString {
 	return VectorString{
-		A: a,
+		_VectorString{
+			A: a,
+		},
 	}
 }
 
@@ -570,7 +725,9 @@ func Make_VectorString(
 	a []string,
 ) VectorString {
 	ret := VectorString{
-		A: a,
+		_VectorString{
+			A: a,
+		},
 	}
 	return ret
 }

@@ -8,128 +8,105 @@ import (
 	"github.com/adl-lang/goadl_rt/v3/sys/types"
 )
 
-func Texpr_StructOfPrimitivesWithDefault() goadl.ATypeExpr[StructOfPrimitivesWithDefault] {
-	return goadl.ATypeExpr[StructOfPrimitivesWithDefault]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "exer02.simple_struct_with_default",
-						Name:       "StructOfPrimitivesWithDefault",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{},
-		},
-	}
+func Texpr_StructOfPrimitivesWithDefault() adlast.ATypeExpr[StructOfPrimitivesWithDefault] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("exer02.simple_struct_with_default", "StructOfPrimitivesWithDefault"),
+		),
+		[]adlast.TypeExpr{},
+	)
+	return adlast.Make_ATypeExpr[StructOfPrimitivesWithDefault](te)
 }
 
 func AST_StructOfPrimitivesWithDefault() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "StructOfPrimitivesWithDefault",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Struct_{
-				V: adlast.Struct{
-					TypeParams: []adlast.Ident{},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "A",
-							SerializedName: "A",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Int32"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Just[any]{
-									V: 1},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "B",
-							SerializedName: "B",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Int64"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Just[any]{
-									V: 2},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "c",
-							SerializedName: "c",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Bool"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Just[any]{
-									V: true},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "d",
-							SerializedName: "d",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Double"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Just[any]{
-									V: 1.1},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "e",
-							SerializedName: "e",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "String"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Just[any]{
-									V: "byebye"},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "exer02.simple_struct_with_default",
-		Decl:       decl,
-	}
+	decl := adlast.MakeAll_Decl(
+		"StructOfPrimitivesWithDefault",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_struct_(
+			adlast.MakeAll_Struct(
+				[]adlast.Ident{},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"A",
+						"A",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Int32",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_just[any](
+							1,
+						),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"B",
+						"B",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Int64",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_just[any](
+							2,
+						),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"c",
+						"c",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Bool",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_just[any](
+							true,
+						),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"d",
+						"d",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Double",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_just[any](
+							1.1,
+						),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"e",
+						"e",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"String",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_just[any](
+							"byebye",
+						),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("exer02.simple_struct_with_default", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "exer02.simple_struct_with_default", Name: "StructOfPrimitivesWithDefault"},
+		adlast.Make_ScopedName("exer02.simple_struct_with_default", "StructOfPrimitivesWithDefault"),
 		AST_StructOfPrimitivesWithDefault(),
 	)
 }

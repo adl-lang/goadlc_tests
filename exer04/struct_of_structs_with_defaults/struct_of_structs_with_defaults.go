@@ -4,24 +4,32 @@ package struct_of_structs_with_defaults
 import ()
 
 type Bar struct {
+	_Bar
+}
+
+type _Bar struct {
 	D   string            `json:"d"`
 	Svb map[string][]bool `json:"svb"`
 }
 
-func New_Bar(
+func MakeAll_Bar(
 	d string,
 	svb map[string][]bool,
 ) Bar {
 	return Bar{
-		D:   d,
-		Svb: svb,
+		_Bar{
+			D:   d,
+			Svb: svb,
+		},
 	}
 }
 
 func Make_Bar() Bar {
 	ret := Bar{
-		D:   ((*Bar)(nil)).Default_d(),
-		Svb: ((*Bar)(nil)).Default_svb(),
+		_Bar{
+			D:   ((*Bar)(nil)).Default_d(),
+			Svb: ((*Bar)(nil)).Default_svb(),
+		},
 	}
 	return ret
 }
@@ -43,17 +51,23 @@ func (*Bar) Default_svb() map[string][]bool {
 }
 
 type Fizz struct {
+	_Fizz
+}
+
+type _Fizz struct {
 	A Foo `json:"A"`
 	B Bar `json:"B"`
 }
 
-func New_Fizz(
+func MakeAll_Fizz(
 	a Foo,
 	b Bar,
 ) Fizz {
 	return Fizz{
-		A: a,
-		B: b,
+		_Fizz{
+			A: a,
+			B: b,
+		},
 	}
 }
 
@@ -62,27 +76,37 @@ func Make_Fizz(
 	b Bar,
 ) Fizz {
 	ret := Fizz{
-		A: a,
-		B: b,
+		_Fizz{
+			A: a,
+			B: b,
+		},
 	}
 	return ret
 }
 
 type Foo struct {
+	_Foo
+}
+
+type _Foo struct {
 	D int32 `json:"d"`
 }
 
-func New_Foo(
+func MakeAll_Foo(
 	d int32,
 ) Foo {
 	return Foo{
-		D: d,
+		_Foo{
+			D: d,
+		},
 	}
 }
 
 func Make_Foo() Foo {
 	ret := Foo{
-		D: ((*Foo)(nil)).Default_d(),
+		_Foo{
+			D: ((*Foo)(nil)).Default_d(),
+		},
 	}
 	return ret
 }
@@ -94,20 +118,26 @@ func (*Foo) Default_d() int32 {
 type NT StructOfStruct
 
 type StructOfStruct struct {
+	_StructOfStruct
+}
+
+type _StructOfStruct struct {
 	A Foo  `json:"A"`
 	B Bar  `json:"B"`
 	C Fizz `json:"c"`
 }
 
-func New_StructOfStruct(
+func MakeAll_StructOfStruct(
 	a Foo,
 	b Bar,
 	c Fizz,
 ) StructOfStruct {
 	return StructOfStruct{
-		A: a,
-		B: b,
-		C: c,
+		_StructOfStruct{
+			A: a,
+			B: b,
+			C: c,
+		},
 	}
 }
 
@@ -117,9 +147,11 @@ func Make_StructOfStruct(
 	c Fizz,
 ) StructOfStruct {
 	ret := StructOfStruct{
-		A: a,
-		B: b,
-		C: c,
+		_StructOfStruct{
+			A: a,
+			B: b,
+			C: c,
+		},
 	}
 	return ret
 }

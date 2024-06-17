@@ -8,440 +8,359 @@ import (
 	"github.com/adl-lang/goadl_rt/v3/sys/types"
 )
 
-func Texpr_Abc[A any, B any](a goadl.ATypeExpr[A], b goadl.ATypeExpr[B]) goadl.ATypeExpr[Abc[A, B]] {
-	return goadl.ATypeExpr[Abc[A, B]]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "exer03.generics",
-						Name:       "Abc",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{a.Value, b.Value},
-		},
-	}
+func Texpr_Abc[A any, B any](a adlast.ATypeExpr[A], b adlast.ATypeExpr[B]) adlast.ATypeExpr[Abc[A, B]] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("exer03.generics", "Abc"),
+		),
+		[]adlast.TypeExpr{a.Value, b.Value},
+	)
+	return adlast.Make_ATypeExpr[Abc[A, B]](te)
 }
 
 func AST_Abc() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "Abc",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Struct_{
-				V: adlast.Struct{
-					TypeParams: []adlast.Ident{
-						"A",
-						"B",
-					},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "a",
-							SerializedName: "a",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_TypeParam{
-										V: "A"},
-								},
-								Parameters: []adlast.TypeExpr{},
+	decl := adlast.MakeAll_Decl(
+		"Abc",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_struct_(
+			adlast.MakeAll_Struct(
+				[]adlast.Ident{
+					"A",
+					"B",
+				},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"a",
+						"a",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_typeParam(
+								"A",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"b",
+						"b",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Vector",
+							),
+							[]adlast.TypeExpr{
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_typeParam(
+										"B",
+									),
+									[]adlast.TypeExpr{},
+								),
 							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "b",
-							SerializedName: "b",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Vector"},
-								},
-								Parameters: []adlast.TypeExpr{
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_TypeParam{
-												V: "B"},
-										},
-										Parameters: []adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"kids",
+						"kids",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Vector",
+							),
+							[]adlast.TypeExpr{
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_reference(
+										adlast.MakeAll_ScopedName(
+											"exer03.generics",
+											"Abc",
+										),
+									),
+									[]adlast.TypeExpr{
+										adlast.MakeAll_TypeExpr(
+											adlast.Make_TypeRef_typeParam(
+												"A",
+											),
+											[]adlast.TypeExpr{},
+										),
+										adlast.MakeAll_TypeExpr(
+											adlast.Make_TypeRef_typeParam(
+												"B",
+											),
+											[]adlast.TypeExpr{},
+										),
 									},
-								},
+								),
 							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "kids",
-							SerializedName: "kids",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Vector"},
-								},
-								Parameters: []adlast.TypeExpr{
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_Reference{
-												V: adlast.ScopedName{
-													ModuleName: "exer03.generics",
-													Name:       "Abc",
-												}},
-										},
-										Parameters: []adlast.TypeExpr{
-											adlast.TypeExpr{
-												TypeRef: adlast.TypeRef{
-													Branch: adlast.TypeRef_TypeParam{
-														V: "A"},
-												},
-												Parameters: []adlast.TypeExpr{},
-											},
-											adlast.TypeExpr{
-												TypeRef: adlast.TypeRef{
-													Branch: adlast.TypeRef_TypeParam{
-														V: "B"},
-												},
-												Parameters: []adlast.TypeExpr{},
-											},
-										},
+						),
+						types.Make_Maybe_just[any](
+							[]interface{}{},
+						),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"grandkids_named",
+						"grandkids_named",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"StringMap",
+							),
+							[]adlast.TypeExpr{
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_reference(
+										adlast.MakeAll_ScopedName(
+											"exer03.generics",
+											"Abc",
+										),
+									),
+									[]adlast.TypeExpr{
+										adlast.MakeAll_TypeExpr(
+											adlast.Make_TypeRef_primitive(
+												"Int64",
+											),
+											[]adlast.TypeExpr{},
+										),
+										adlast.MakeAll_TypeExpr(
+											adlast.Make_TypeRef_primitive(
+												"String",
+											),
+											[]adlast.TypeExpr{},
+										),
 									},
-								},
+								),
 							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Just[any]{
-									V: []interface{}{}},
+						),
+						types.Make_Maybe_just[any](
+							map[string]interface{}{"fav": map[string]interface{}{"a": 4321, "b": []interface{}{"aaa"}, "c": 99, "d": map[string]interface{}{"d": map[string]interface{}{"a": 22}}, "e": map[string]interface{}{"a": 1234}, "f": interface{}(nil), "grandkids_named": map[string]interface{}{}}},
+						),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"c",
+						"c",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Int64",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_just[any](
+							66,
+						),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"d",
+						"d",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_reference(
+								adlast.MakeAll_ScopedName(
+									"exer03.generics",
+									"Def",
+								),
+							),
+							[]adlast.TypeExpr{
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_typeParam(
+										"A",
+									),
+									[]adlast.TypeExpr{},
+								),
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_typeParam(
+										"B",
+									),
+									[]adlast.TypeExpr{},
+								),
 							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "grandkids_named",
-							SerializedName: "grandkids_named",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "StringMap"},
-								},
-								Parameters: []adlast.TypeExpr{
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_Reference{
-												V: adlast.ScopedName{
-													ModuleName: "exer03.generics",
-													Name:       "Abc",
-												}},
-										},
-										Parameters: []adlast.TypeExpr{
-											adlast.TypeExpr{
-												TypeRef: adlast.TypeRef{
-													Branch: adlast.TypeRef_Primitive{
-														V: "Int64"},
-												},
-												Parameters: []adlast.TypeExpr{},
-											},
-											adlast.TypeExpr{
-												TypeRef: adlast.TypeRef{
-													Branch: adlast.TypeRef_Primitive{
-														V: "String"},
-												},
-												Parameters: []adlast.TypeExpr{},
-											},
-										},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"e",
+						"e",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_reference(
+								adlast.MakeAll_ScopedName(
+									"exer03.generics",
+									"Def",
+								),
+							),
+							[]adlast.TypeExpr{
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_primitive(
+										"Int64",
+									),
+									[]adlast.TypeExpr{},
+								),
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_primitive(
+										"String",
+									),
+									[]adlast.TypeExpr{},
+								),
+							},
+						),
+						types.Make_Maybe_just[any](
+							map[string]interface{}{"a": 1234},
+						),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"f",
+						"f",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Nullable",
+							),
+							[]adlast.TypeExpr{
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_reference(
+										adlast.MakeAll_ScopedName(
+											"exer03.generics",
+											"Abc",
+										),
+									),
+									[]adlast.TypeExpr{
+										adlast.MakeAll_TypeExpr(
+											adlast.Make_TypeRef_primitive(
+												"Int64",
+											),
+											[]adlast.TypeExpr{},
+										),
+										adlast.MakeAll_TypeExpr(
+											adlast.Make_TypeRef_primitive(
+												"String",
+											),
+											[]adlast.TypeExpr{},
+										),
 									},
-								},
+								),
 							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Just[any]{
-									V: map[string]interface{}{"fav": map[string]interface{}{"a": 4321, "b": []interface{}{"aaa"}, "c": 99, "d": map[string]interface{}{"d": map[string]interface{}{"a": 22}}, "e": map[string]interface{}{"a": 1234}, "f": interface{}(nil), "grandkids_named": map[string]interface{}{}}}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "c",
-							SerializedName: "c",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Int64"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Just[any]{
-									V: 66},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "d",
-							SerializedName: "d",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Reference{
-										V: adlast.ScopedName{
-											ModuleName: "exer03.generics",
-											Name:       "Def",
-										}},
-								},
-								Parameters: []adlast.TypeExpr{
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_TypeParam{
-												V: "A"},
-										},
-										Parameters: []adlast.TypeExpr{},
-									},
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_TypeParam{
-												V: "B"},
-										},
-										Parameters: []adlast.TypeExpr{},
-									},
-								},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "e",
-							SerializedName: "e",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Reference{
-										V: adlast.ScopedName{
-											ModuleName: "exer03.generics",
-											Name:       "Def",
-										}},
-								},
-								Parameters: []adlast.TypeExpr{
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_Primitive{
-												V: "Int64"},
-										},
-										Parameters: []adlast.TypeExpr{},
-									},
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_Primitive{
-												V: "String"},
-										},
-										Parameters: []adlast.TypeExpr{},
-									},
-								},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Just[any]{
-									V: map[string]interface{}{"a": 1234}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "f",
-							SerializedName: "f",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Nullable"},
-								},
-								Parameters: []adlast.TypeExpr{
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_Reference{
-												V: adlast.ScopedName{
-													ModuleName: "exer03.generics",
-													Name:       "Abc",
-												}},
-										},
-										Parameters: []adlast.TypeExpr{
-											adlast.TypeExpr{
-												TypeRef: adlast.TypeRef{
-													Branch: adlast.TypeRef_Primitive{
-														V: "Int64"},
-												},
-												Parameters: []adlast.TypeExpr{},
-											},
-											adlast.TypeExpr{
-												TypeRef: adlast.TypeRef{
-													Branch: adlast.TypeRef_Primitive{
-														V: "String"},
-												},
-												Parameters: []adlast.TypeExpr{},
-											},
-										},
-									},
-								},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Just[any]{
-									V: map[string]interface{}{"a": 4321, "b": []interface{}{"aaa"}, "c": 99, "d": map[string]interface{}{"d": map[string]interface{}{"a": 22}}, "e": map[string]interface{}{"a": 1234}, "f": interface{}(nil)}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "exer03.generics",
-		Decl:       decl,
-	}
+						),
+						types.Make_Maybe_just[any](
+							map[string]interface{}{"a": 4321, "b": []interface{}{"aaa"}, "c": 99, "d": map[string]interface{}{"d": map[string]interface{}{"a": 22}}, "e": map[string]interface{}{"a": 1234}, "f": interface{}(nil)},
+						),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("exer03.generics", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "exer03.generics", Name: "Abc"},
+		adlast.Make_ScopedName("exer03.generics", "Abc"),
 		AST_Abc(),
 	)
 }
 
-func Texpr_Def[A any, B any](a goadl.ATypeExpr[A], b goadl.ATypeExpr[B]) goadl.ATypeExpr[Def[A, B]] {
-	return goadl.ATypeExpr[Def[A, B]]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "exer03.generics",
-						Name:       "Def",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{a.Value, b.Value},
-		},
-	}
+func Texpr_Def[A any, B any](a adlast.ATypeExpr[A], b adlast.ATypeExpr[B]) adlast.ATypeExpr[Def[A, B]] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("exer03.generics", "Def"),
+		),
+		[]adlast.TypeExpr{a.Value, b.Value},
+	)
+	return adlast.Make_ATypeExpr[Def[A, B]](te)
 }
 
 func AST_Def() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "Def",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Union_{
-				V: adlast.Union{
-					TypeParams: []adlast.Ident{
-						"A",
-						"B",
-					},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "a",
-							SerializedName: "a",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_TypeParam{
-										V: "A"},
-								},
-								Parameters: []adlast.TypeExpr{},
+	decl := adlast.MakeAll_Decl(
+		"Def",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_union_(
+			adlast.MakeAll_Union(
+				[]adlast.Ident{
+					"A",
+					"B",
+				},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"a",
+						"a",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_typeParam(
+								"A",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"b",
+						"b",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Vector",
+							),
+							[]adlast.TypeExpr{
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_typeParam(
+										"B",
+									),
+									[]adlast.TypeExpr{},
+								),
 							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"c",
+						"c",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Int64",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"d",
+						"d",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_reference(
+								adlast.MakeAll_ScopedName(
+									"exer03.generics",
+									"Def",
+								),
+							),
+							[]adlast.TypeExpr{
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_typeParam(
+										"A",
+									),
+									[]adlast.TypeExpr{},
+								),
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_typeParam(
+										"B",
+									),
+									[]adlast.TypeExpr{},
+								),
 							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "b",
-							SerializedName: "b",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Vector"},
-								},
-								Parameters: []adlast.TypeExpr{
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_TypeParam{
-												V: "B"},
-										},
-										Parameters: []adlast.TypeExpr{},
-									},
-								},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "c",
-							SerializedName: "c",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Int64"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "d",
-							SerializedName: "d",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Reference{
-										V: adlast.ScopedName{
-											ModuleName: "exer03.generics",
-											Name:       "Def",
-										}},
-								},
-								Parameters: []adlast.TypeExpr{
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_TypeParam{
-												V: "A"},
-										},
-										Parameters: []adlast.TypeExpr{},
-									},
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_TypeParam{
-												V: "B"},
-										},
-										Parameters: []adlast.TypeExpr{},
-									},
-								},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "exer03.generics",
-		Decl:       decl,
-	}
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("exer03.generics", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "exer03.generics", Name: "Def"},
+		adlast.Make_ScopedName("exer03.generics", "Def"),
 		AST_Def(),
 	)
 }

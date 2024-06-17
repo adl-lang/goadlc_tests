@@ -2,12 +2,13 @@ module decode.test01 {
 
 newtype A = Int64;
 
+@A 123
 struct B {
     Int64 a;
 };
 
 struct C {
-    B b;
+    B b = {"a": 1234};
     B c;
 };
 

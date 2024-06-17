@@ -8,322 +8,246 @@ import (
 	"github.com/adl-lang/goadl_rt/v3/sys/types"
 )
 
-func Texpr_ChoiceThree[A any, B any, C any](a goadl.ATypeExpr[A], b goadl.ATypeExpr[B], c goadl.ATypeExpr[C]) goadl.ATypeExpr[ChoiceThree[A, B, C]] {
-	return goadl.ATypeExpr[ChoiceThree[A, B, C]]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "cyoa",
-						Name:       "ChoiceThree",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{a.Value, b.Value, c.Value},
-		},
-	}
+func Texpr_ChoiceThree[A any, B any, C any](a adlast.ATypeExpr[A], b adlast.ATypeExpr[B], c adlast.ATypeExpr[C]) adlast.ATypeExpr[ChoiceThree[A, B, C]] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("cyoa", "ChoiceThree"),
+		),
+		[]adlast.TypeExpr{a.Value, b.Value, c.Value},
+	)
+	return adlast.Make_ATypeExpr[ChoiceThree[A, B, C]](te)
 }
 
 func AST_ChoiceThree() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "ChoiceThree",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Union_{
-				V: adlast.Union{
-					TypeParams: []adlast.Ident{
-						"A",
-						"B",
-						"C",
-					},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "one",
-							SerializedName: "one",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_TypeParam{
-										V: "A"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "two",
-							SerializedName: "two",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_TypeParam{
-										V: "B"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "tri",
-							SerializedName: "tri",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_TypeParam{
-										V: "C"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "cyoa",
-		Decl:       decl,
-	}
+	decl := adlast.MakeAll_Decl(
+		"ChoiceThree",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_union_(
+			adlast.MakeAll_Union(
+				[]adlast.Ident{
+					"A",
+					"B",
+					"C",
+				},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"one",
+						"one",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_typeParam(
+								"A",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"two",
+						"two",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_typeParam(
+								"B",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"tri",
+						"tri",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_typeParam(
+								"C",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("cyoa", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "cyoa", Name: "ChoiceThree"},
+		adlast.Make_ScopedName("cyoa", "ChoiceThree"),
 		AST_ChoiceThree(),
 	)
 }
 
-func Texpr_ChoiceTwo[A any, B any](a goadl.ATypeExpr[A], b goadl.ATypeExpr[B]) goadl.ATypeExpr[ChoiceTwo[A, B]] {
-	return goadl.ATypeExpr[ChoiceTwo[A, B]]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "cyoa",
-						Name:       "ChoiceTwo",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{a.Value, b.Value},
-		},
-	}
+func Texpr_ChoiceTwo[A any, B any](a adlast.ATypeExpr[A], b adlast.ATypeExpr[B]) adlast.ATypeExpr[ChoiceTwo[A, B]] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("cyoa", "ChoiceTwo"),
+		),
+		[]adlast.TypeExpr{a.Value, b.Value},
+	)
+	return adlast.Make_ATypeExpr[ChoiceTwo[A, B]](te)
 }
 
 func AST_ChoiceTwo() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "ChoiceTwo",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Union_{
-				V: adlast.Union{
-					TypeParams: []adlast.Ident{
-						"A",
-						"B",
-					},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "one",
-							SerializedName: "one",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_TypeParam{
-										V: "A"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "two",
-							SerializedName: "two",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_TypeParam{
-										V: "B"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "cyoa",
-		Decl:       decl,
-	}
+	decl := adlast.MakeAll_Decl(
+		"ChoiceTwo",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_union_(
+			adlast.MakeAll_Union(
+				[]adlast.Ident{
+					"A",
+					"B",
+				},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"one",
+						"one",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_typeParam(
+								"A",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"two",
+						"two",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_typeParam(
+								"B",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("cyoa", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "cyoa", Name: "ChoiceTwo"},
+		adlast.Make_ScopedName("cyoa", "ChoiceTwo"),
 		AST_ChoiceTwo(),
 	)
 }
 
-func Texpr_Page[A any, B any, C any](a goadl.ATypeExpr[A], b goadl.ATypeExpr[B], c goadl.ATypeExpr[C]) goadl.ATypeExpr[Page[A, B, C]] {
-	return goadl.ATypeExpr[Page[A, B, C]]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "cyoa",
-						Name:       "Page",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{a.Value, b.Value, c.Value},
-		},
-	}
+func Texpr_Page[A any, B any, C any](a adlast.ATypeExpr[A], b adlast.ATypeExpr[B], c adlast.ATypeExpr[C]) adlast.ATypeExpr[Page[A, B, C]] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("cyoa", "Page"),
+		),
+		[]adlast.TypeExpr{a.Value, b.Value, c.Value},
+	)
+	return adlast.Make_ATypeExpr[Page[A, B, C]](te)
 }
 
 func AST_Page() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "Page",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Union_{
-				V: adlast.Union{
-					TypeParams: []adlast.Ident{
-						"A",
-						"B",
-						"C",
-					},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "next_page",
-							SerializedName: "next_page",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Void"},
-								},
-								Parameters: []adlast.TypeExpr{},
+	decl := adlast.MakeAll_Decl(
+		"Page",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_union_(
+			adlast.MakeAll_Union(
+				[]adlast.Ident{
+					"A",
+					"B",
+					"C",
+				},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"next_page",
+						"next_page",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Void",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"two",
+						"two",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_reference(
+								adlast.MakeAll_ScopedName(
+									"cyoa",
+									"ChoiceTwo",
+								),
+							),
+							[]adlast.TypeExpr{
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_typeParam(
+										"A",
+									),
+									[]adlast.TypeExpr{},
+								),
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_typeParam(
+										"B",
+									),
+									[]adlast.TypeExpr{},
+								),
 							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"tri",
+						"tri",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_reference(
+								adlast.MakeAll_ScopedName(
+									"cyoa",
+									"ChoiceThree",
+								),
+							),
+							[]adlast.TypeExpr{
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_typeParam(
+										"A",
+									),
+									[]adlast.TypeExpr{},
+								),
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_typeParam(
+										"B",
+									),
+									[]adlast.TypeExpr{},
+								),
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_typeParam(
+										"C",
+									),
+									[]adlast.TypeExpr{},
+								),
 							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "two",
-							SerializedName: "two",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Reference{
-										V: adlast.ScopedName{
-											ModuleName: "cyoa",
-											Name:       "ChoiceTwo",
-										}},
-								},
-								Parameters: []adlast.TypeExpr{
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_TypeParam{
-												V: "A"},
-										},
-										Parameters: []adlast.TypeExpr{},
-									},
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_TypeParam{
-												V: "B"},
-										},
-										Parameters: []adlast.TypeExpr{},
-									},
-								},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "tri",
-							SerializedName: "tri",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Reference{
-										V: adlast.ScopedName{
-											ModuleName: "cyoa",
-											Name:       "ChoiceThree",
-										}},
-								},
-								Parameters: []adlast.TypeExpr{
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_TypeParam{
-												V: "A"},
-										},
-										Parameters: []adlast.TypeExpr{},
-									},
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_TypeParam{
-												V: "B"},
-										},
-										Parameters: []adlast.TypeExpr{},
-									},
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_TypeParam{
-												V: "C"},
-										},
-										Parameters: []adlast.TypeExpr{},
-									},
-								},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "cyoa",
-		Decl:       decl,
-	}
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("cyoa", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "cyoa", Name: "Page"},
+		adlast.Make_ScopedName("cyoa", "Page"),
 		AST_Page(),
 	)
 }

@@ -8,75 +8,57 @@ import (
 	"github.com/adl-lang/goadl_rt/v3/sys/types"
 )
 
-func Texpr_X() goadl.ATypeExpr[X] {
-	return goadl.ATypeExpr[X]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "exer05.ast",
-						Name:       "X",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{},
-		},
-	}
+func Texpr_X() adlast.ATypeExpr[X] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("exer05.ast", "X"),
+		),
+		[]adlast.TypeExpr{},
+	)
+	return adlast.Make_ATypeExpr[X](te)
 }
 
 func AST_X() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "X",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Struct_{
-				V: adlast.Struct{
-					TypeParams: []adlast.Ident{},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "ast",
-							SerializedName: "ast",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "StringMap"},
-								},
-								Parameters: []adlast.TypeExpr{
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_Reference{
-												V: adlast.ScopedName{
-													ModuleName: "sys.adlast",
-													Name:       "Module",
-												}},
-										},
-										Parameters: []adlast.TypeExpr{},
-									},
-								},
+	decl := adlast.MakeAll_Decl(
+		"X",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_struct_(
+			adlast.MakeAll_Struct(
+				[]adlast.Ident{},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"ast",
+						"ast",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"StringMap",
+							),
+							[]adlast.TypeExpr{
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_reference(
+										adlast.MakeAll_ScopedName(
+											"sys.adlast",
+											"Module",
+										),
+									),
+									[]adlast.TypeExpr{},
+								),
 							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "exer05.ast",
-		Decl:       decl,
-	}
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("exer05.ast", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "exer05.ast", Name: "X"},
+		adlast.Make_ScopedName("exer05.ast", "X"),
 		AST_X(),
 	)
 }

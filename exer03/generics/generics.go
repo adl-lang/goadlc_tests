@@ -3,9 +3,14 @@ package generics
 
 import (
 	"fmt"
+	goadl "github.com/adl-lang/goadl_rt/v3"
 )
 
 type Abc[A any, B any] struct {
+	_Abc[A, B]
+}
+
+type _Abc[A any, B any] struct {
 	A               A                             `json:"a"`
 	B               []B                           `json:"b"`
 	Kids            []Abc[A, B]                   `json:"kids"`
@@ -16,7 +21,7 @@ type Abc[A any, B any] struct {
 	F               *Abc[int64, string]           `json:"f"`
 }
 
-func New_Abc[A any, B any](
+func MakeAll_Abc[A any, B any](
 	a A,
 	b []B,
 	kids []Abc[A, B],
@@ -27,14 +32,16 @@ func New_Abc[A any, B any](
 	f *Abc[int64, string],
 ) Abc[A, B] {
 	return Abc[A, B]{
-		A:               a,
-		B:               b,
-		Kids:            kids,
-		Grandkids_named: grandkids_named,
-		C:               c,
-		D:               d,
-		E:               e,
-		F:               f,
+		_Abc[A, B]{
+			A:               a,
+			B:               b,
+			Kids:            kids,
+			Grandkids_named: grandkids_named,
+			C:               c,
+			D:               d,
+			E:               e,
+			F:               f,
+		},
 	}
 }
 
@@ -44,14 +51,16 @@ func Make_Abc[A any, B any](
 	d Def[A, B],
 ) Abc[A, B] {
 	ret := Abc[A, B]{
-		A:               a,
-		B:               b,
-		Kids:            ((*Abc[A, B])(nil)).Default_kids(),
-		Grandkids_named: ((*Abc[A, B])(nil)).Default_grandkids_named(),
-		C:               ((*Abc[A, B])(nil)).Default_c(),
-		D:               d,
-		E:               ((*Abc[A, B])(nil)).Default_e(),
-		F:               ((*Abc[A, B])(nil)).Default_f(),
+		_Abc[A, B]{
+			A:               a,
+			B:               b,
+			Kids:            ((*Abc[A, B])(nil)).Default_kids(),
+			Grandkids_named: ((*Abc[A, B])(nil)).Default_grandkids_named(),
+			C:               ((*Abc[A, B])(nil)).Default_c(),
+			D:               d,
+			E:               ((*Abc[A, B])(nil)).Default_e(),
+			F:               ((*Abc[A, B])(nil)).Default_f(),
+		},
 	}
 	return ret
 }
@@ -61,82 +70,72 @@ func (*Abc[A, B]) Default_kids() []Abc[A, B] {
 }
 func (*Abc[A, B]) Default_grandkids_named() map[string]Abc[int64, string] {
 	return map[string]Abc[int64, string]{
-		"fav": Abc[int64, string]{
-			A: 4321,
-			B: []string{
+		"fav": MakeAll_Abc[int64, string](
+			4321,
+			[]string{
 				"aaa",
 			},
-			Kids:            []Abc[int64, string]{},
-			Grandkids_named: map[string]Abc[int64, string]{},
-			C:               99,
-			D: Def[int64, string]{
-				Branch: Def_D[int64, string]{
-					V: Def[int64, string]{
-						Branch: Def_A[int64]{
-							V: 22},
-					}},
-			},
-			E: Def[int64, string]{
-				Branch: Def_A[int64]{
-					V: 1234},
-			},
-			F: nil,
-		},
+			[]Abc[int64, string]{},
+			map[string]Abc[int64, string]{},
+			99,
+			Make_Def_d[int64, string](
+				Make_Def_a[int64, string](
+					22,
+				),
+			),
+			Make_Def_a[int64, string](
+				1234,
+			),
+			nil,
+		),
 	}
 }
 func (*Abc[A, B]) Default_c() int64 {
 	return 66
 }
 func (*Abc[A, B]) Default_e() Def[int64, string] {
-	return Def[int64, string]{
-		Branch: Def_A[int64]{
-			V: 1234},
-	}
+	return Make_Def_a[int64, string](
+		1234,
+	)
 }
 func (*Abc[A, B]) Default_f() *Abc[int64, string] {
-	return &Abc[int64, string]{
-		A: 4321,
-		B: []string{
+	return goadl.Addr(MakeAll_Abc[int64, string](
+		4321,
+		[]string{
 			"aaa",
 		},
-		Kids: []Abc[int64, string]{},
-		Grandkids_named: map[string]Abc[int64, string]{
-			"fav": Abc[int64, string]{
-				A: 4321,
-				B: []string{
+		[]Abc[int64, string]{},
+		map[string]Abc[int64, string]{
+			"fav": MakeAll_Abc[int64, string](
+				4321,
+				[]string{
 					"aaa",
 				},
-				Kids:            []Abc[int64, string]{},
-				Grandkids_named: map[string]Abc[int64, string]{},
-				C:               99,
-				D: Def[int64, string]{
-					Branch: Def_D[int64, string]{
-						V: Def[int64, string]{
-							Branch: Def_A[int64]{
-								V: 22},
-						}},
-				},
-				E: Def[int64, string]{
-					Branch: Def_A[int64]{
-						V: 1234},
-				},
-				F: nil,
-			},
+				[]Abc[int64, string]{},
+				map[string]Abc[int64, string]{},
+				99,
+				Make_Def_d[int64, string](
+					Make_Def_a[int64, string](
+						22,
+					),
+				),
+				Make_Def_a[int64, string](
+					1234,
+				),
+				nil,
+			),
 		},
-		C: 99,
-		D: Def[int64, string]{
-			Branch: Def_D[int64, string]{
-				V: Def[int64, string]{
-					Branch: Def_A[int64]{
-						V: 22},
-				}},
-		},
-		E: Def[int64, string]{
-			Branch: Def_A[int64]{
-				V: 1234},
-		},
-		F: nil,
-	}
+		99,
+		Make_Def_d[int64, string](
+			Make_Def_a[int64, string](
+				22,
+			),
+		),
+		Make_Def_a[int64, string](
+			1234,
+		),
+		nil,
+	))
 }
 
 type Def[A any, B any] struct {
@@ -150,81 +149,101 @@ type DefBranch[A any, B any] interface {
 func (*Def[A, B]) MakeNewBranch(key string) (any, error) {
 	switch key {
 	case "a":
-		return &Def_A[A]{}, nil
+		return &_Def_A[A]{}, nil
 	case "b":
-		return &Def_B[B]{}, nil
+		return &_Def_B[B]{}, nil
 	case "c":
-		return &Def_C{}, nil
+		return &_Def_C{}, nil
 	case "d":
-		return &Def_D[A, B]{}, nil
+		return &_Def_D[A, B]{}, nil
 	}
 	return nil, fmt.Errorf("unknown branch is : %s", key)
 }
 
-type Def_A[A any] struct {
+type _Def_A[A any] struct {
 	V A `branch:"a"`
 }
-type Def_B[B any] struct {
+type _Def_B[B any] struct {
 	V []B `branch:"b"`
 }
-type Def_C struct {
+type _Def_C struct {
 	V int64 `branch:"c"`
 }
-type Def_D[A any, B any] struct {
+type _Def_D[A any, B any] struct {
 	V Def[A, B] `branch:"d"`
 }
 
-func (Def_A[A]) isDefBranch()    {}
-func (Def_B[B]) isDefBranch()    {}
-func (Def_C) isDefBranch()       {}
-func (Def_D[A, B]) isDefBranch() {}
+func (_Def_A[A]) isDefBranch()    {}
+func (_Def_B[B]) isDefBranch()    {}
+func (_Def_C) isDefBranch()       {}
+func (_Def_D[A, B]) isDefBranch() {}
 
 func Make_Def_a[A any, B any](v A) Def[A, B] {
 	return Def[A, B]{
-		Def_A[A]{v},
+		_Def_A[A]{v},
 	}
 }
 
 func Make_Def_b[A any, B any](v []B) Def[A, B] {
 	return Def[A, B]{
-		Def_B[B]{v},
+		_Def_B[B]{v},
 	}
 }
 
 func Make_Def_c[A any, B any](v int64) Def[A, B] {
 	return Def[A, B]{
-		Def_C{v},
+		_Def_C{v},
 	}
 }
 
 func Make_Def_d[A any, B any](v Def[A, B]) Def[A, B] {
 	return Def[A, B]{
-		Def_D[A, B]{v},
+		_Def_D[A, B]{v},
 	}
 }
 
+func (un Def[A, B]) Cast_a() (A, bool) {
+	br, ok := un.Branch.(_Def_A[A])
+	return br.V, ok
+}
+
+func (un Def[A, B]) Cast_b() ([]B, bool) {
+	br, ok := un.Branch.(_Def_B[B])
+	return br.V, ok
+}
+
+func (un Def[A, B]) Cast_c() (int64, bool) {
+	br, ok := un.Branch.(_Def_C)
+	return br.V, ok
+}
+
+func (un Def[A, B]) Cast_d() (Def[A, B], bool) {
+	br, ok := un.Branch.(_Def_D[A, B])
+	return br.V, ok
+}
+
 func Handle_Def[A any, B any, T any](
-	_in DefBranch[A, B],
+	_in Def[A, B],
 	a func(a A) T,
 	b func(b []B) T,
 	c func(c int64) T,
 	d func(d Def[A, B]) T,
 	_default func() T,
 ) T {
-	switch _b := _in.(type) {
-	case Def_A[A]:
+	switch _b := _in.Branch.(type) {
+	case _Def_A[A]:
 		if a != nil {
 			return a(_b.V)
 		}
-	case Def_B[B]:
+	case _Def_B[B]:
 		if b != nil {
 			return b(_b.V)
 		}
-	case Def_C:
+	case _Def_C:
 		if c != nil {
 			return c(_b.V)
 		}
-	case Def_D[A, B]:
+	case _Def_D[A, B]:
 		if d != nil {
 			return d(_b.V)
 		}
@@ -236,27 +255,27 @@ func Handle_Def[A any, B any, T any](
 }
 
 func HandleWithErr_Def[A any, B any, T any](
-	_in DefBranch[A, B],
+	_in Def[A, B],
 	a func(a A) (T, error),
 	b func(b []B) (T, error),
 	c func(c int64) (T, error),
 	d func(d Def[A, B]) (T, error),
 	_default func() (T, error),
 ) (T, error) {
-	switch _b := _in.(type) {
-	case Def_A[A]:
+	switch _b := _in.Branch.(type) {
+	case _Def_A[A]:
 		if a != nil {
 			return a(_b.V)
 		}
-	case Def_B[B]:
+	case _Def_B[B]:
 		if b != nil {
 			return b(_b.V)
 		}
-	case Def_C:
+	case _Def_C:
 		if c != nil {
 			return c(_b.V)
 		}
-	case Def_D[A, B]:
+	case _Def_D[A, B]:
 		if d != nil {
 			return d(_b.V)
 		}

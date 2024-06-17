@@ -4,17 +4,23 @@ package b
 import ()
 
 type B struct {
+	_B
+}
+
+type _B struct {
 	A string `json:"a"`
 	B string `json:"b"`
 }
 
-func New_B(
+func MakeAll_B(
 	a string,
 	b string,
 ) B {
 	return B{
-		A: a,
-		B: b,
+		_B{
+			A: a,
+			B: b,
+		},
 	}
 }
 
@@ -23,8 +29,10 @@ func Make_B(
 	b string,
 ) B {
 	ret := B{
-		A: a,
-		B: b,
+		_B{
+			A: a,
+			B: b,
+		},
 	}
 	return ret
 }

@@ -4,14 +4,20 @@ package struct01
 import ()
 
 type B struct {
+	_B
+}
+
+type _B struct {
 	A string `json:"a"`
 }
 
-func New_B(
+func MakeAll_B(
 	a string,
 ) B {
 	return B{
-		A: a,
+		_B{
+			A: a,
+		},
 	}
 }
 
@@ -19,12 +25,18 @@ func Make_B(
 	a string,
 ) B {
 	ret := B{
-		A: a,
+		_B{
+			A: a,
+		},
 	}
 	return ret
 }
 
 type Struct01 struct {
+	_Struct01
+}
+
+type _Struct01 struct {
 	A struct{}                      `json:"A"`
 	B int64                         `json:"B"`
 	C string                        `json:"C"`
@@ -37,8 +49,7 @@ type Struct01 struct {
 	J B                             `json:"j"`
 }
 
-func New_Struct01(
-	a struct{},
+func MakeAll_Struct01(
 	b int64,
 	c string,
 	d any,
@@ -50,21 +61,22 @@ func New_Struct01(
 	j B,
 ) Struct01 {
 	return Struct01{
-		A: a,
-		B: b,
-		C: c,
-		D: d,
-		E: e,
-		F: f,
-		G: g,
-		H: h,
-		I: i,
-		J: j,
+		_Struct01{
+			A: struct{}{},
+			B: b,
+			C: c,
+			D: d,
+			E: e,
+			F: f,
+			G: g,
+			H: h,
+			I: i,
+			J: j,
+		},
 	}
 }
 
 func Make_Struct01(
-	a struct{},
 	b int64,
 	c string,
 	d any,
@@ -76,16 +88,18 @@ func Make_Struct01(
 	j B,
 ) Struct01 {
 	ret := Struct01{
-		A: a,
-		B: b,
-		C: c,
-		D: d,
-		E: e,
-		F: f,
-		G: g,
-		H: h,
-		I: i,
-		J: j,
+		_Struct01{
+			A: struct{}{},
+			B: b,
+			C: c,
+			D: d,
+			E: e,
+			F: f,
+			G: g,
+			H: h,
+			I: i,
+			J: j,
+		},
 	}
 	return ret
 }

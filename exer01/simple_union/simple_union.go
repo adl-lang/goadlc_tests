@@ -16,97 +16,132 @@ type UnionOfPrimitivesBranch interface {
 func (*UnionOfPrimitives) MakeNewBranch(key string) (any, error) {
 	switch key {
 	case "A":
-		return &UnionOfPrimitives_A{}, nil
+		return &_UnionOfPrimitives_A{}, nil
 	case "B":
-		return &UnionOfPrimitives_B{}, nil
+		return &_UnionOfPrimitives_B{}, nil
 	case "c":
-		return &UnionOfPrimitives_C{}, nil
+		return &_UnionOfPrimitives_C{}, nil
 	case "d":
-		return &UnionOfPrimitives_D{}, nil
+		return &_UnionOfPrimitives_D{}, nil
 	case "e":
-		return &UnionOfPrimitives_E{}, nil
+		return &_UnionOfPrimitives_E{}, nil
 	case "f":
-		return &UnionOfPrimitives_F{}, nil
+		return &_UnionOfPrimitives_F{}, nil
 	case "g":
-		return &UnionOfPrimitives_G{}, nil
+		return &_UnionOfPrimitives_G{}, nil
 	}
 	return nil, fmt.Errorf("unknown branch is : %s", key)
 }
 
-type UnionOfPrimitives_A struct {
+type _UnionOfPrimitives_A struct {
 	V int32 `branch:"A"`
 }
-type UnionOfPrimitives_B struct {
+type _UnionOfPrimitives_B struct {
 	V int64 `branch:"B"`
 }
-type UnionOfPrimitives_C struct {
+type _UnionOfPrimitives_C struct {
 	V bool `branch:"c"`
 }
-type UnionOfPrimitives_D struct {
+type _UnionOfPrimitives_D struct {
 	V float64 `branch:"d"`
 }
-type UnionOfPrimitives_E struct {
+type _UnionOfPrimitives_E struct {
 	V string `branch:"e"`
 }
-type UnionOfPrimitives_F struct {
+type _UnionOfPrimitives_F struct {
 	V []string `branch:"f"`
 }
-type UnionOfPrimitives_G struct {
+type _UnionOfPrimitives_G struct {
 	V struct{} `branch:"g"`
 }
 
-func (UnionOfPrimitives_A) isUnionOfPrimitivesBranch() {}
-func (UnionOfPrimitives_B) isUnionOfPrimitivesBranch() {}
-func (UnionOfPrimitives_C) isUnionOfPrimitivesBranch() {}
-func (UnionOfPrimitives_D) isUnionOfPrimitivesBranch() {}
-func (UnionOfPrimitives_E) isUnionOfPrimitivesBranch() {}
-func (UnionOfPrimitives_F) isUnionOfPrimitivesBranch() {}
-func (UnionOfPrimitives_G) isUnionOfPrimitivesBranch() {}
+func (_UnionOfPrimitives_A) isUnionOfPrimitivesBranch() {}
+func (_UnionOfPrimitives_B) isUnionOfPrimitivesBranch() {}
+func (_UnionOfPrimitives_C) isUnionOfPrimitivesBranch() {}
+func (_UnionOfPrimitives_D) isUnionOfPrimitivesBranch() {}
+func (_UnionOfPrimitives_E) isUnionOfPrimitivesBranch() {}
+func (_UnionOfPrimitives_F) isUnionOfPrimitivesBranch() {}
+func (_UnionOfPrimitives_G) isUnionOfPrimitivesBranch() {}
 
 func Make_UnionOfPrimitives_A(v int32) UnionOfPrimitives {
 	return UnionOfPrimitives{
-		UnionOfPrimitives_A{v},
+		_UnionOfPrimitives_A{v},
 	}
 }
 
 func Make_UnionOfPrimitives_B(v int64) UnionOfPrimitives {
 	return UnionOfPrimitives{
-		UnionOfPrimitives_B{v},
+		_UnionOfPrimitives_B{v},
 	}
 }
 
 func Make_UnionOfPrimitives_c(v bool) UnionOfPrimitives {
 	return UnionOfPrimitives{
-		UnionOfPrimitives_C{v},
+		_UnionOfPrimitives_C{v},
 	}
 }
 
 func Make_UnionOfPrimitives_d(v float64) UnionOfPrimitives {
 	return UnionOfPrimitives{
-		UnionOfPrimitives_D{v},
+		_UnionOfPrimitives_D{v},
 	}
 }
 
 func Make_UnionOfPrimitives_e(v string) UnionOfPrimitives {
 	return UnionOfPrimitives{
-		UnionOfPrimitives_E{v},
+		_UnionOfPrimitives_E{v},
 	}
 }
 
 func Make_UnionOfPrimitives_f(v []string) UnionOfPrimitives {
 	return UnionOfPrimitives{
-		UnionOfPrimitives_F{v},
+		_UnionOfPrimitives_F{v},
 	}
 }
 
-func Make_UnionOfPrimitives_g(v struct{}) UnionOfPrimitives {
+func Make_UnionOfPrimitives_g() UnionOfPrimitives {
 	return UnionOfPrimitives{
-		UnionOfPrimitives_G{v},
+		_UnionOfPrimitives_G{struct{}{}},
 	}
+}
+
+func (un UnionOfPrimitives) Cast_A() (int32, bool) {
+	br, ok := un.Branch.(_UnionOfPrimitives_A)
+	return br.V, ok
+}
+
+func (un UnionOfPrimitives) Cast_B() (int64, bool) {
+	br, ok := un.Branch.(_UnionOfPrimitives_B)
+	return br.V, ok
+}
+
+func (un UnionOfPrimitives) Cast_c() (bool, bool) {
+	br, ok := un.Branch.(_UnionOfPrimitives_C)
+	return br.V, ok
+}
+
+func (un UnionOfPrimitives) Cast_d() (float64, bool) {
+	br, ok := un.Branch.(_UnionOfPrimitives_D)
+	return br.V, ok
+}
+
+func (un UnionOfPrimitives) Cast_e() (string, bool) {
+	br, ok := un.Branch.(_UnionOfPrimitives_E)
+	return br.V, ok
+}
+
+func (un UnionOfPrimitives) Cast_f() ([]string, bool) {
+	br, ok := un.Branch.(_UnionOfPrimitives_F)
+	return br.V, ok
+}
+
+func (un UnionOfPrimitives) Cast_g() (struct{}, bool) {
+	br, ok := un.Branch.(_UnionOfPrimitives_G)
+	return br.V, ok
 }
 
 func Handle_UnionOfPrimitives[T any](
-	_in UnionOfPrimitivesBranch,
+	_in UnionOfPrimitives,
 	A func(A int32) T,
 	B func(B int64) T,
 	c func(c bool) T,
@@ -116,32 +151,32 @@ func Handle_UnionOfPrimitives[T any](
 	g func(g struct{}) T,
 	_default func() T,
 ) T {
-	switch _b := _in.(type) {
-	case UnionOfPrimitives_A:
+	switch _b := _in.Branch.(type) {
+	case _UnionOfPrimitives_A:
 		if A != nil {
 			return A(_b.V)
 		}
-	case UnionOfPrimitives_B:
+	case _UnionOfPrimitives_B:
 		if B != nil {
 			return B(_b.V)
 		}
-	case UnionOfPrimitives_C:
+	case _UnionOfPrimitives_C:
 		if c != nil {
 			return c(_b.V)
 		}
-	case UnionOfPrimitives_D:
+	case _UnionOfPrimitives_D:
 		if d != nil {
 			return d(_b.V)
 		}
-	case UnionOfPrimitives_E:
+	case _UnionOfPrimitives_E:
 		if e != nil {
 			return e(_b.V)
 		}
-	case UnionOfPrimitives_F:
+	case _UnionOfPrimitives_F:
 		if f != nil {
 			return f(_b.V)
 		}
-	case UnionOfPrimitives_G:
+	case _UnionOfPrimitives_G:
 		if g != nil {
 			return g(_b.V)
 		}
@@ -153,7 +188,7 @@ func Handle_UnionOfPrimitives[T any](
 }
 
 func HandleWithErr_UnionOfPrimitives[T any](
-	_in UnionOfPrimitivesBranch,
+	_in UnionOfPrimitives,
 	A func(A int32) (T, error),
 	B func(B int64) (T, error),
 	c func(c bool) (T, error),
@@ -163,32 +198,32 @@ func HandleWithErr_UnionOfPrimitives[T any](
 	g func(g struct{}) (T, error),
 	_default func() (T, error),
 ) (T, error) {
-	switch _b := _in.(type) {
-	case UnionOfPrimitives_A:
+	switch _b := _in.Branch.(type) {
+	case _UnionOfPrimitives_A:
 		if A != nil {
 			return A(_b.V)
 		}
-	case UnionOfPrimitives_B:
+	case _UnionOfPrimitives_B:
 		if B != nil {
 			return B(_b.V)
 		}
-	case UnionOfPrimitives_C:
+	case _UnionOfPrimitives_C:
 		if c != nil {
 			return c(_b.V)
 		}
-	case UnionOfPrimitives_D:
+	case _UnionOfPrimitives_D:
 		if d != nil {
 			return d(_b.V)
 		}
-	case UnionOfPrimitives_E:
+	case _UnionOfPrimitives_E:
 		if e != nil {
 			return e(_b.V)
 		}
-	case UnionOfPrimitives_F:
+	case _UnionOfPrimitives_F:
 		if f != nil {
 			return f(_b.V)
 		}
-	case UnionOfPrimitives_G:
+	case _UnionOfPrimitives_G:
 		if g != nil {
 			return g(_b.V)
 		}
@@ -210,97 +245,132 @@ type UnionOfVoidsBranch interface {
 func (*UnionOfVoids) MakeNewBranch(key string) (any, error) {
 	switch key {
 	case "A":
-		return &UnionOfVoids_A{}, nil
+		return &_UnionOfVoids_A{}, nil
 	case "B":
-		return &UnionOfVoids_B{}, nil
+		return &_UnionOfVoids_B{}, nil
 	case "c":
-		return &UnionOfVoids_C{}, nil
+		return &_UnionOfVoids_C{}, nil
 	case "d":
-		return &UnionOfVoids_D{}, nil
+		return &_UnionOfVoids_D{}, nil
 	case "e":
-		return &UnionOfVoids_E{}, nil
+		return &_UnionOfVoids_E{}, nil
 	case "f":
-		return &UnionOfVoids_F{}, nil
+		return &_UnionOfVoids_F{}, nil
 	case "g":
-		return &UnionOfVoids_G{}, nil
+		return &_UnionOfVoids_G{}, nil
 	}
 	return nil, fmt.Errorf("unknown branch is : %s", key)
 }
 
-type UnionOfVoids_A struct {
+type _UnionOfVoids_A struct {
 	V struct{} `branch:"A"`
 }
-type UnionOfVoids_B struct {
+type _UnionOfVoids_B struct {
 	V struct{} `branch:"B"`
 }
-type UnionOfVoids_C struct {
+type _UnionOfVoids_C struct {
 	V struct{} `branch:"c"`
 }
-type UnionOfVoids_D struct {
+type _UnionOfVoids_D struct {
 	V struct{} `branch:"d"`
 }
-type UnionOfVoids_E struct {
+type _UnionOfVoids_E struct {
 	V struct{} `branch:"e"`
 }
-type UnionOfVoids_F struct {
+type _UnionOfVoids_F struct {
 	V struct{} `branch:"f"`
 }
-type UnionOfVoids_G struct {
+type _UnionOfVoids_G struct {
 	V struct{} `branch:"g"`
 }
 
-func (UnionOfVoids_A) isUnionOfVoidsBranch() {}
-func (UnionOfVoids_B) isUnionOfVoidsBranch() {}
-func (UnionOfVoids_C) isUnionOfVoidsBranch() {}
-func (UnionOfVoids_D) isUnionOfVoidsBranch() {}
-func (UnionOfVoids_E) isUnionOfVoidsBranch() {}
-func (UnionOfVoids_F) isUnionOfVoidsBranch() {}
-func (UnionOfVoids_G) isUnionOfVoidsBranch() {}
+func (_UnionOfVoids_A) isUnionOfVoidsBranch() {}
+func (_UnionOfVoids_B) isUnionOfVoidsBranch() {}
+func (_UnionOfVoids_C) isUnionOfVoidsBranch() {}
+func (_UnionOfVoids_D) isUnionOfVoidsBranch() {}
+func (_UnionOfVoids_E) isUnionOfVoidsBranch() {}
+func (_UnionOfVoids_F) isUnionOfVoidsBranch() {}
+func (_UnionOfVoids_G) isUnionOfVoidsBranch() {}
 
-func Make_UnionOfVoids_A(v struct{}) UnionOfVoids {
+func Make_UnionOfVoids_A() UnionOfVoids {
 	return UnionOfVoids{
-		UnionOfVoids_A{v},
+		_UnionOfVoids_A{struct{}{}},
 	}
 }
 
-func Make_UnionOfVoids_B(v struct{}) UnionOfVoids {
+func Make_UnionOfVoids_B() UnionOfVoids {
 	return UnionOfVoids{
-		UnionOfVoids_B{v},
+		_UnionOfVoids_B{struct{}{}},
 	}
 }
 
-func Make_UnionOfVoids_c(v struct{}) UnionOfVoids {
+func Make_UnionOfVoids_c() UnionOfVoids {
 	return UnionOfVoids{
-		UnionOfVoids_C{v},
+		_UnionOfVoids_C{struct{}{}},
 	}
 }
 
-func Make_UnionOfVoids_d(v struct{}) UnionOfVoids {
+func Make_UnionOfVoids_d() UnionOfVoids {
 	return UnionOfVoids{
-		UnionOfVoids_D{v},
+		_UnionOfVoids_D{struct{}{}},
 	}
 }
 
-func Make_UnionOfVoids_e(v struct{}) UnionOfVoids {
+func Make_UnionOfVoids_e() UnionOfVoids {
 	return UnionOfVoids{
-		UnionOfVoids_E{v},
+		_UnionOfVoids_E{struct{}{}},
 	}
 }
 
-func Make_UnionOfVoids_f(v struct{}) UnionOfVoids {
+func Make_UnionOfVoids_f() UnionOfVoids {
 	return UnionOfVoids{
-		UnionOfVoids_F{v},
+		_UnionOfVoids_F{struct{}{}},
 	}
 }
 
-func Make_UnionOfVoids_g(v struct{}) UnionOfVoids {
+func Make_UnionOfVoids_g() UnionOfVoids {
 	return UnionOfVoids{
-		UnionOfVoids_G{v},
+		_UnionOfVoids_G{struct{}{}},
 	}
+}
+
+func (un UnionOfVoids) Cast_A() (struct{}, bool) {
+	br, ok := un.Branch.(_UnionOfVoids_A)
+	return br.V, ok
+}
+
+func (un UnionOfVoids) Cast_B() (struct{}, bool) {
+	br, ok := un.Branch.(_UnionOfVoids_B)
+	return br.V, ok
+}
+
+func (un UnionOfVoids) Cast_c() (struct{}, bool) {
+	br, ok := un.Branch.(_UnionOfVoids_C)
+	return br.V, ok
+}
+
+func (un UnionOfVoids) Cast_d() (struct{}, bool) {
+	br, ok := un.Branch.(_UnionOfVoids_D)
+	return br.V, ok
+}
+
+func (un UnionOfVoids) Cast_e() (struct{}, bool) {
+	br, ok := un.Branch.(_UnionOfVoids_E)
+	return br.V, ok
+}
+
+func (un UnionOfVoids) Cast_f() (struct{}, bool) {
+	br, ok := un.Branch.(_UnionOfVoids_F)
+	return br.V, ok
+}
+
+func (un UnionOfVoids) Cast_g() (struct{}, bool) {
+	br, ok := un.Branch.(_UnionOfVoids_G)
+	return br.V, ok
 }
 
 func Handle_UnionOfVoids[T any](
-	_in UnionOfVoidsBranch,
+	_in UnionOfVoids,
 	A func(A struct{}) T,
 	B func(B struct{}) T,
 	c func(c struct{}) T,
@@ -310,32 +380,32 @@ func Handle_UnionOfVoids[T any](
 	g func(g struct{}) T,
 	_default func() T,
 ) T {
-	switch _b := _in.(type) {
-	case UnionOfVoids_A:
+	switch _b := _in.Branch.(type) {
+	case _UnionOfVoids_A:
 		if A != nil {
 			return A(_b.V)
 		}
-	case UnionOfVoids_B:
+	case _UnionOfVoids_B:
 		if B != nil {
 			return B(_b.V)
 		}
-	case UnionOfVoids_C:
+	case _UnionOfVoids_C:
 		if c != nil {
 			return c(_b.V)
 		}
-	case UnionOfVoids_D:
+	case _UnionOfVoids_D:
 		if d != nil {
 			return d(_b.V)
 		}
-	case UnionOfVoids_E:
+	case _UnionOfVoids_E:
 		if e != nil {
 			return e(_b.V)
 		}
-	case UnionOfVoids_F:
+	case _UnionOfVoids_F:
 		if f != nil {
 			return f(_b.V)
 		}
-	case UnionOfVoids_G:
+	case _UnionOfVoids_G:
 		if g != nil {
 			return g(_b.V)
 		}
@@ -347,7 +417,7 @@ func Handle_UnionOfVoids[T any](
 }
 
 func HandleWithErr_UnionOfVoids[T any](
-	_in UnionOfVoidsBranch,
+	_in UnionOfVoids,
 	A func(A struct{}) (T, error),
 	B func(B struct{}) (T, error),
 	c func(c struct{}) (T, error),
@@ -357,32 +427,32 @@ func HandleWithErr_UnionOfVoids[T any](
 	g func(g struct{}) (T, error),
 	_default func() (T, error),
 ) (T, error) {
-	switch _b := _in.(type) {
-	case UnionOfVoids_A:
+	switch _b := _in.Branch.(type) {
+	case _UnionOfVoids_A:
 		if A != nil {
 			return A(_b.V)
 		}
-	case UnionOfVoids_B:
+	case _UnionOfVoids_B:
 		if B != nil {
 			return B(_b.V)
 		}
-	case UnionOfVoids_C:
+	case _UnionOfVoids_C:
 		if c != nil {
 			return c(_b.V)
 		}
-	case UnionOfVoids_D:
+	case _UnionOfVoids_D:
 		if d != nil {
 			return d(_b.V)
 		}
-	case UnionOfVoids_E:
+	case _UnionOfVoids_E:
 		if e != nil {
 			return e(_b.V)
 		}
-	case UnionOfVoids_F:
+	case _UnionOfVoids_F:
 		if f != nil {
 			return f(_b.V)
 		}
-	case UnionOfVoids_G:
+	case _UnionOfVoids_G:
 		if g != nil {
 			return g(_b.V)
 		}

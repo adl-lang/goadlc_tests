@@ -1,6 +1,7 @@
 module talk.choice01 {
 
 type Page = String;
+
 newtype LangGen = CodeGen<Language>;
 
 struct CodeGen<L> {
@@ -16,8 +17,16 @@ union ChoiceOne {
 };
 
 struct Step {
-    String description;
+    String description = "Hello World!";
 };
+
+
+// type MyString<T> = String;
+
+
+// struct MyStruct {
+//     sys.types.Map<Vector<String>,Int64> a;
+// };
 
 union Language {
     Void go_;

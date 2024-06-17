@@ -4,14 +4,20 @@ package struct_of_structs
 import ()
 
 type Bar struct {
+	_Bar
+}
+
+type _Bar struct {
 	D string `json:"d"`
 }
 
-func New_Bar(
+func MakeAll_Bar(
 	d string,
 ) Bar {
 	return Bar{
-		D: d,
+		_Bar{
+			D: d,
+		},
 	}
 }
 
@@ -19,26 +25,34 @@ func Make_Bar(
 	d string,
 ) Bar {
 	ret := Bar{
-		D: d,
+		_Bar{
+			D: d,
+		},
 	}
 	return ret
 }
 
 type Fizz struct {
+	_Fizz
+}
+
+type _Fizz struct {
 	A Foo   `json:"A"`
 	B Bar   `json:"B"`
 	C *Fizz `json:"c"`
 }
 
-func New_Fizz(
+func MakeAll_Fizz(
 	a Foo,
 	b Bar,
 	c *Fizz,
 ) Fizz {
 	return Fizz{
-		A: a,
-		B: b,
-		C: c,
+		_Fizz{
+			A: a,
+			B: b,
+			C: c,
+		},
 	}
 }
 
@@ -48,22 +62,30 @@ func Make_Fizz(
 	c *Fizz,
 ) Fizz {
 	ret := Fizz{
-		A: a,
-		B: b,
-		C: c,
+		_Fizz{
+			A: a,
+			B: b,
+			C: c,
+		},
 	}
 	return ret
 }
 
 type Foo struct {
+	_Foo
+}
+
+type _Foo struct {
 	D int32 `json:"d"`
 }
 
-func New_Foo(
+func MakeAll_Foo(
 	d int32,
 ) Foo {
 	return Foo{
-		D: d,
+		_Foo{
+			D: d,
+		},
 	}
 }
 
@@ -71,26 +93,34 @@ func Make_Foo(
 	d int32,
 ) Foo {
 	ret := Foo{
-		D: d,
+		_Foo{
+			D: d,
+		},
 	}
 	return ret
 }
 
 type StructOfStruct struct {
+	_StructOfStruct
+}
+
+type _StructOfStruct struct {
 	A Foo  `json:"A"`
 	B Bar  `json:"B"`
 	C Fizz `json:"c"`
 }
 
-func New_StructOfStruct(
+func MakeAll_StructOfStruct(
 	a Foo,
 	b Bar,
 	c Fizz,
 ) StructOfStruct {
 	return StructOfStruct{
-		A: a,
-		B: b,
-		C: c,
+		_StructOfStruct{
+			A: a,
+			B: b,
+			C: c,
+		},
 	}
 }
 
@@ -100,9 +130,11 @@ func Make_StructOfStruct(
 	c Fizz,
 ) StructOfStruct {
 	ret := StructOfStruct{
-		A: a,
-		B: b,
-		C: c,
+		_StructOfStruct{
+			A: a,
+			B: b,
+			C: c,
+		},
 	}
 	return ret
 }

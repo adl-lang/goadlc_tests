@@ -4,6 +4,10 @@ package simple_struct_with_default
 import ()
 
 type StructOfPrimitivesWithDefault struct {
+	_StructOfPrimitivesWithDefault
+}
+
+type _StructOfPrimitivesWithDefault struct {
 	A int32   `json:"A"`
 	B int64   `json:"B"`
 	C bool    `json:"c"`
@@ -11,7 +15,7 @@ type StructOfPrimitivesWithDefault struct {
 	E string  `json:"e"`
 }
 
-func New_StructOfPrimitivesWithDefault(
+func MakeAll_StructOfPrimitivesWithDefault(
 	a int32,
 	b int64,
 	c bool,
@@ -19,21 +23,25 @@ func New_StructOfPrimitivesWithDefault(
 	e string,
 ) StructOfPrimitivesWithDefault {
 	return StructOfPrimitivesWithDefault{
-		A: a,
-		B: b,
-		C: c,
-		D: d,
-		E: e,
+		_StructOfPrimitivesWithDefault{
+			A: a,
+			B: b,
+			C: c,
+			D: d,
+			E: e,
+		},
 	}
 }
 
 func Make_StructOfPrimitivesWithDefault() StructOfPrimitivesWithDefault {
 	ret := StructOfPrimitivesWithDefault{
-		A: ((*StructOfPrimitivesWithDefault)(nil)).Default_A(),
-		B: ((*StructOfPrimitivesWithDefault)(nil)).Default_B(),
-		C: ((*StructOfPrimitivesWithDefault)(nil)).Default_c(),
-		D: ((*StructOfPrimitivesWithDefault)(nil)).Default_d(),
-		E: ((*StructOfPrimitivesWithDefault)(nil)).Default_e(),
+		_StructOfPrimitivesWithDefault{
+			A: ((*StructOfPrimitivesWithDefault)(nil)).Default_A(),
+			B: ((*StructOfPrimitivesWithDefault)(nil)).Default_B(),
+			C: ((*StructOfPrimitivesWithDefault)(nil)).Default_c(),
+			D: ((*StructOfPrimitivesWithDefault)(nil)).Default_d(),
+			E: ((*StructOfPrimitivesWithDefault)(nil)).Default_e(),
+		},
 	}
 	return ret
 }

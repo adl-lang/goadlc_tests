@@ -5,15 +5,17 @@ import (
 	"testing"
 
 	"adl_testing/exer02/a"
+	b2 "adl_testing/exer02/another/b"
 	"adl_testing/exer02/b"
 
 	goadl "github.com/adl-lang/goadl_rt/v3"
 )
 
 func TestExec02Encode(t *testing.T) {
-	x := a.A{
-		A: b.B{},
-	}
+	x := a.MakeAll_A(
+		b.B{},
+		b2.B{},
+	)
 	out := &bytes.Buffer{}
 	enc := goadl.CreateJsonEncodeBinding[a.A](a.Texpr_A(), goadl.RESOLVER)
 	enc.Encode(out, x)

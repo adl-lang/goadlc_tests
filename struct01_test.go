@@ -10,20 +10,21 @@ import (
 
 func TestXxx(t *testing.T) {
 	a := "a"
-	x := struct01.Struct01{
-		A: struct{}{},
-		B: 41,
-		C: "",
-		D: map[string]any{
+	x := struct01.Make_Struct01(
+		41,
+		"",
+		map[string]any{
 			"a": 1234567890,
 		},
-		E: []string{"a", "b", "c"},
-		F: map[string][]string{"a": {"z"}, "b": {"x"}, "c": {"y"}},
-		I: &a,
-		J: struct01.B{
-			A: "sfd",
-		},
-	}
+		[]string{"a", "b", "c"},
+		map[string][]string{"a": {"z"}, "b": {"x"}, "c": {"y"}},
+		map[string]map[string]string{},
+		map[string]map[string]*string{},
+		&a,
+		struct01.Make_B(
+			"sfd",
+		),
+	)
 
 	// v := reflect.ValueOf(x)
 	// f0 := v.Field(0)

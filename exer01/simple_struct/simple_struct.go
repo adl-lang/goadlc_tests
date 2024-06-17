@@ -4,6 +4,10 @@ package simple_struct
 import ()
 
 type StructOfPrimitives struct {
+	_StructOfPrimitives
+}
+
+type _StructOfPrimitives struct {
 	A int32   `json:"A"`
 	B int64   `json:"B"`
 	C bool    `json:"c"`
@@ -11,7 +15,7 @@ type StructOfPrimitives struct {
 	E string  `json:"e"`
 }
 
-func New_StructOfPrimitives(
+func MakeAll_StructOfPrimitives(
 	a int32,
 	b int64,
 	c bool,
@@ -19,11 +23,13 @@ func New_StructOfPrimitives(
 	e string,
 ) StructOfPrimitives {
 	return StructOfPrimitives{
-		A: a,
-		B: b,
-		C: c,
-		D: d,
-		E: e,
+		_StructOfPrimitives{
+			A: a,
+			B: b,
+			C: c,
+			D: d,
+			E: e,
+		},
 	}
 }
 
@@ -35,11 +41,13 @@ func Make_StructOfPrimitives(
 	e string,
 ) StructOfPrimitives {
 	ret := StructOfPrimitives{
-		A: a,
-		B: b,
-		C: c,
-		D: d,
-		E: e,
+		_StructOfPrimitives{
+			A: a,
+			B: b,
+			C: c,
+			D: d,
+			E: e,
+		},
 	}
 	return ret
 }

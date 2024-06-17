@@ -13,8 +13,19 @@ import (
 	goadl "github.com/adl-lang/goadl_rt/v3"
 	"github.com/adl-lang/goadl_rt/v3/customtypes"
 	"github.com/adl-lang/goadl_rt/v3/sys/adlast"
+	"github.com/adl-lang/goadl_rt/v3/sys/annotations"
 	"github.com/adl-lang/goadl_rt/v3/sys/types"
 )
+
+func TestAnnotations(t *testing.T) {
+	a := annotations.MakeAll_SerializedWithInternalTag("sadf")
+	enc := goadl.CreateJsonEncodeBinding(annotations.Texpr_SerializedWithInternalTag(), goadl.RESOLVER)
+	buf := bytes.Buffer{}
+	enc.Encode(&buf, a)
+	if buf.String() != `{"tag":"sadf"}` {
+		t.Error()
+	}
+}
 
 func TestNewTypePrim(t *testing.T) {
 	out := &bytes.Buffer{}
@@ -39,7 +50,8 @@ func TestStructOfPrim(t *testing.T) {
 	if err != nil {
 		t.Fatalf("err : %v", err)
 	}
-	if !reflect.DeepEqual(y, test01.B{A: 42}) {
+	y.A = 31
+	if !reflect.DeepEqual(y, test01.Make_B(31)) {
 		t.Fail()
 	}
 }
@@ -53,43 +65,9 @@ func TestStructOfStruct(t *testing.T) {
 	if err != nil {
 		t.Fatalf("err : %v", err)
 	}
-	if !reflect.DeepEqual(y, test01.C{B: test01.B{A: 42}, C: test01.B{A: 3}}) {
+	if !reflect.DeepEqual(y, test01.MakeAll_C(test01.Make_B(42), test01.Make_B(3))) {
 		t.Fail()
 	}
-}
-
-// These aren't test, rather snipped of who to use refection
-func TestReflectConstruction(t *testing.T) {
-	_ = t
-	dT := reflect.TypeFor[test01.D]()
-	dv := reflect.New(dT).Elem()
-
-	b := test01.D_A{
-		V: 1,
-	}
-	s0 := reflect.ValueOf(b)
-	f0 := dv.Field(0)
-	f0.Set(s0)
-
-	// fmt.Printf("1 %+#v\n", dv.Interface())
-}
-
-// These aren't test, rather snipped of who to use refection
-func TestReflectConstruction02(t *testing.T) {
-	_ = t
-
-	x := struct {
-		D test01.D
-	}{}
-
-	dT := reflect.TypeFor[test01.D_A]()
-	dv := reflect.New(dT).Elem()
-	dv.Field(0).SetInt(123)
-
-	f0 := reflect.ValueOf(&x).Elem().Field(0).Field(0)
-	f0.Set(dv)
-
-	// fmt.Printf("1 %+#v\n", dv.Interface())
 }
 
 func TestTopLevelUnion01(t *testing.T) {
@@ -124,7 +102,7 @@ func TestTopLevelUnion02(t *testing.T) {
 	if err != nil {
 		t.Fatalf("err : %v", err)
 	}
-	if !reflect.DeepEqual(y, test01.Make_D_b(test01.B{A: 42})) {
+	if !reflect.DeepEqual(y, test01.Make_D_b(test01.Make_B(42))) {
 		t.Fail()
 	}
 }
@@ -138,7 +116,7 @@ func TestUnionInStruct(t *testing.T) {
 	if err != nil {
 		t.Fatalf("err : %v", err)
 	}
-	if !reflect.DeepEqual(y, test01.E{D: test01.Make_D_b(test01.B{A: 42})}) {
+	if !reflect.DeepEqual(y, test01.MakeAll_E(test01.Make_D_b(test01.Make_B(42)))) {
 		t.Fail()
 	}
 }
@@ -147,26 +125,25 @@ func TestPrims(t *testing.T) {
 	_ = t
 	x := int64(99)
 	_ = x
-	p := test01.F{
-		A: 1,
-		B: 2,
-		C: 3,
-		D: 4,
-		E: 5,
-		F: 6,
-		G: 7,
-		H: 8,
-		I: true,
-		J: 1.1,
-		K: 1.2,
-		L: "abcd",
+	p := test01.MakeAll_F(
+		1,
+		2,
+		3,
+		4,
+		5,
+		6,
+		7,
+		8,
+		true,
+		1.1,
+		1.2,
+		"abcd",
 		// NOTE the default encoding of a number is a float64
-		N: []any{nil, false, float64(1), map[string]any{"a": "a", "b": "sadf"}},
-		O: []int64{1, 2, 3},
-		P: map[string]int64{"a": 1, "b": 2},
-		Q: &x,
-		R: goadl.Void{},
-	}
+		[]any{nil, false, float64(1), map[string]any{"a": "a", "b": "sadf"}},
+		[]int64{1, 2, 3},
+		map[string]int64{"a": 1, "b": 2},
+		&x,
+	)
 	buf := bytes.Buffer{}
 	enc := goadl.CreateJsonEncodeBinding(test01.Texpr_F(), goadl.RESOLVER)
 	err := enc.Encode(&buf, p)
@@ -207,7 +184,10 @@ func TestStructRecurse(t *testing.T) {
 	if err != nil {
 		t.Fatalf("err : %v", err)
 	}
-	expect := test01.G{A: []test01.G{{A: []test01.G{}}}}
+
+	expect := test01.MakeAll_G([]test01.G{
+		test01.MakeAll_G([]test01.G{}),
+	})
 	if !reflect.DeepEqual(y, expect) {
 		t.Errorf("expect != received\nexpect  :%+#v\nreceived:%+#v\n", expect, y)
 	}
@@ -229,7 +209,7 @@ func TestAdlAst(t *testing.T) {
 	if err != nil {
 		t.Fatalf("can't read combined.json err:%v", err)
 	}
-	dec := goadl.CreateJsonDecodeBinding(goadl.Texpr_StringMap(goadl.Texpr_Module()), goadl.RESOLVER)
+	dec := goadl.CreateJsonDecodeBinding(adlast.Texpr_StringMap(goadl.Texpr_Module()), goadl.RESOLVER)
 	var ast map[string]adlast.Module
 	err = dec.Decode(cj, &ast)
 	if err != nil {
@@ -237,7 +217,7 @@ func TestAdlAst(t *testing.T) {
 	}
 	// fmt.Printf("%+v\n", ast)
 	buf := bytes.Buffer{}
-	enc := goadl.CreateJsonEncodeBinding(goadl.Texpr_StringMap(goadl.Texpr_Module()), goadl.RESOLVER)
+	enc := goadl.CreateJsonEncodeBinding(adlast.Texpr_StringMap(goadl.Texpr_Module()), goadl.RESOLVER)
 	err = enc.Encode(&buf, ast)
 	if err != nil {
 		t.Fatalf("err:%v", err)
@@ -268,7 +248,7 @@ func TestAdlAst(t *testing.T) {
 
 func TestUnchecked(t *testing.T) {
 	t.Run("struct-struct", func(t *testing.T) {
-		var x = test01.New_Int(5)
+		var x = test01.MakeAll_Int(5)
 		var y = test01.Int{}
 		var texpr = test01.Texpr_Int().Value
 
@@ -289,7 +269,7 @@ func TestUnchecked(t *testing.T) {
 		}
 	})
 	t.Run("&struct-struct", func(t *testing.T) {
-		var x = test01.New_Int(5)
+		var x = test01.MakeAll_Int(5)
 		var y = test01.Int{}
 		var texpr = test01.Texpr_Int().Value
 
@@ -310,7 +290,7 @@ func TestUnchecked(t *testing.T) {
 		}
 	})
 	t.Run("struct-any", func(t *testing.T) {
-		var x = test01.New_Int(5)
+		var x = test01.MakeAll_Int(5)
 		var y any = &test01.Int{}
 		var texpr = test01.Texpr_Int().Value
 
@@ -331,7 +311,7 @@ func TestUnchecked(t *testing.T) {
 		}
 	})
 	t.Run("&struct-any", func(t *testing.T) {
-		var x = test01.New_Int(5)
+		var x = test01.MakeAll_Int(5)
 		var y any = &test01.Int{}
 		var texpr = test01.Texpr_Int().Value
 
@@ -352,7 +332,7 @@ func TestUnchecked(t *testing.T) {
 		}
 	})
 	t.Run("any&-any", func(t *testing.T) {
-		var z = test01.New_Int(5)
+		var z = test01.MakeAll_Int(5)
 		var x any = &z
 		var y any = &test01.Int{}
 		var texpr = test01.Texpr_Int().Value
@@ -374,7 +354,7 @@ func TestUnchecked(t *testing.T) {
 		}
 	})
 	t.Run("any-any", func(t *testing.T) {
-		var z = test01.New_Int(5)
+		var z = test01.MakeAll_Int(5)
 		var x any = z
 		var y any = &test01.Int{}
 		var texpr = test01.Texpr_Int().Value
@@ -396,7 +376,7 @@ func TestUnchecked(t *testing.T) {
 		}
 	})
 	t.Run("&any-any", func(t *testing.T) {
-		var z = test01.New_Int(5)
+		var z = test01.MakeAll_Int(5)
 		var x any = z
 		var y any = &test01.Int{}
 		var texpr = test01.Texpr_Int().Value
@@ -418,7 +398,7 @@ func TestUnchecked(t *testing.T) {
 		}
 	})
 	t.Run("&any-&any", func(t *testing.T) {
-		var z = test01.New_Int(5)
+		var z = test01.MakeAll_Int(5)
 		var x any = &z
 		var y any = &test01.Int{}
 		var texpr = test01.Texpr_Int().Value
@@ -442,7 +422,7 @@ func TestUnchecked(t *testing.T) {
 }
 
 func TestEncDec(t *testing.T) {
-	str := "abc"
+	// str := "abc"
 	testCases := []struct {
 		desc  string
 		texpr adlast.TypeExpr
@@ -452,55 +432,55 @@ func TestEncDec(t *testing.T) {
 		{
 			desc:  "Int",
 			texpr: test01.Texpr_Int().Value,
-			x:     test01.New_Int(5),
+			x:     test01.MakeAll_Int(5),
 			y:     &test01.Int{},
 		},
 		{
 			desc:  "UInt",
 			texpr: test01.Texpr_Uint().Value,
-			x:     test01.New_Uint(5),
+			x:     test01.MakeAll_Uint(5),
 			y:     &test01.Uint{},
 		},
 		{
 			desc:  "Bool",
 			texpr: test01.Texpr_Bool().Value,
-			x:     test01.New_Bool(true),
+			x:     test01.MakeAll_Bool(true),
 			y:     &test01.Bool{},
 		},
 		{
 			desc:  "Unit",
 			texpr: test01.Texpr_Unit().Value,
-			x:     test01.New_Unit(),
+			x:     test01.MakeAll_Unit(),
 			y:     &test01.Unit{},
 		},
 		{
 			desc:  "NullableString",
 			texpr: test01.Texpr_NullableString().Value,
-			x:     test01.New_NullableString(&str),
+			x:     test01.MakeAll_NullableString(goadl.Addr("abc")),
 			y:     &test01.NullableString{},
 		},
 		{
 			desc:  "StringMapString",
 			texpr: test01.Texpr_StringMapString().Value,
-			x:     test01.New_StringMapString(map[string]string{"a": "sdf"}),
+			x:     test01.MakeAll_StringMapString(map[string]string{"a": "sdf"}),
 			y:     &test01.StringMapString{},
 		},
 		{
 			desc:  "VectorString",
 			texpr: test01.Texpr_VectorString().Value,
-			x:     test01.New_VectorString([]string{"a", "sdf"}),
+			x:     test01.MakeAll_VectorString([]string{"a", "sdf"}),
 			y:     &test01.VectorString{},
 		},
 		{
 			desc:  "Json01",
 			texpr: test01.Texpr_Json().Value,
-			x:     test01.New_Json(map[string]any{"a": "sdf"}),
+			x:     test01.MakeAll_Json(map[string]any{"a": "sdf"}),
 			y:     &test01.Json{},
 		},
 		{
 			desc:  "Json02",
 			texpr: test01.Texpr_Json().Value,
-			x:     test01.New_Json([]any{true, float64(1), float64(1.1), nil}),
+			x:     test01.MakeAll_Json([]any{true, float64(1), float64(1.1), nil}),
 			y:     &test01.Json{},
 		},
 	}
@@ -528,7 +508,7 @@ func TestEncDec(t *testing.T) {
 }
 
 func TestSetTest(t *testing.T) {
-	st := test01.New_SetTest(
+	st := test01.MakeAll_SetTest(
 		customtypes.MapSet[string]{
 			"a": {},
 			"b": {},
@@ -607,7 +587,7 @@ func TestMapTest(t *testing.T) {
 	if !reflect.DeepEqual(x, x2) {
 		t.Errorf("!=")
 	}
-	x3 := test01.New_MapTest(
+	x3 := test01.MakeAll_MapTest(
 		customtypes.MapMap[string, int64]{"a": 1},
 	)
 	if !reflect.DeepEqual(x, x3) {
@@ -616,14 +596,14 @@ func TestMapTest(t *testing.T) {
 }
 
 func TestGenericF(t *testing.T) {
-	x := test01.New_GenericF[string]("hw")
-	ejb := goadl.CreateJsonEncodeBinding(test01.Texpr_GenericF(goadl.Texpr_String()), goadl.RESOLVER)
+	x := test01.MakeAll_GenericF[string]("hw")
+	ejb := goadl.CreateJsonEncodeBinding(test01.Texpr_GenericF(adlast.Texpr_String()), goadl.RESOLVER)
 	buf := bytes.Buffer{}
 	err := ejb.Encode(&buf, x)
 	if err != nil {
 		t.Error(err)
 	}
-	djb := goadl.CreateJsonDecodeBinding(test01.Texpr_GenericF(goadl.Texpr_String()), goadl.RESOLVER)
+	djb := goadl.CreateJsonDecodeBinding(test01.Texpr_GenericF(adlast.Texpr_String()), goadl.RESOLVER)
 	dst := test01.GenericF[string]{}
 	err = djb.Decode(&buf, &dst)
 	if err != nil {
@@ -636,14 +616,14 @@ func TestGenericF(t *testing.T) {
 }
 
 func TestMaybe(t *testing.T) {
-	enc_bind := goadl.CreateJsonEncodeBinding(goadl.Texpr_Maybe(goadl.Texpr_String()), goadl.RESOLVER)
-	src := types.Make_Maybe_nothing[string](struct{}{})
+	enc_bind := goadl.CreateJsonEncodeBinding(goadl.Texpr_Maybe(adlast.Texpr_String()), goadl.RESOLVER)
+	src := types.Make_Maybe_nothing[string]()
 	buf := bytes.Buffer{}
 	err := enc_bind.Encode(&buf, src)
 	if err != nil {
 		t.Error(err)
 	}
-	dec_bind := goadl.CreateJsonDecodeBinding(goadl.Texpr_Maybe(goadl.Texpr_String()), goadl.RESOLVER)
+	dec_bind := goadl.CreateJsonDecodeBinding(goadl.Texpr_Maybe(adlast.Texpr_String()), goadl.RESOLVER)
 	dst := types.Maybe[string]{}
 	err = dec_bind.Decode(&buf, &dst)
 	if err != nil {
@@ -651,5 +631,31 @@ func TestMaybe(t *testing.T) {
 	}
 	if !reflect.DeepEqual(src, dst) {
 		t.Errorf("!=")
+	}
+}
+
+func TestZeroMaybe(t *testing.T) {
+	fn := func(x types.Maybe[*string]) int {
+		return types.Handle_Maybe[*string, int](
+			x,
+			func(nothing struct{}) int {
+				// fmt.Println("nothing")
+				return 0
+			},
+			func(just *string) int {
+				// fmt.Println("just")
+				return 1
+			},
+			func() int {
+				// fmt.Println("default")
+				return 2
+			},
+		)
+	}
+	if y := fn(types.Maybe[*string]{}); y != 2 {
+		t.Errorf("expected default %v", y)
+	}
+	if y := fn(types.Make_Maybe_just[*string](nil)); y != 1 {
+		t.Errorf("expected just %v", y)
 	}
 }

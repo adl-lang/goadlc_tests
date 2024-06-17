@@ -7,17 +7,23 @@ import (
 )
 
 type A struct {
+	_A
+}
+
+type _A struct {
 	A b.B  `json:"a"`
 	B b2.B `json:"b"`
 }
 
-func New_A(
+func MakeAll_A(
 	a b.B,
 	b b2.B,
 ) A {
 	return A{
-		A: a,
-		B: b,
+		_A{
+			A: a,
+			B: b,
+		},
 	}
 }
 
@@ -26,8 +32,10 @@ func Make_A(
 	b b2.B,
 ) A {
 	ret := A{
-		A: a,
-		B: b,
+		_A{
+			A: a,
+			B: b,
+		},
 	}
 	return ret
 }

@@ -10,10 +10,11 @@ import (
 	"adl_testing/exer01/struct01"
 
 	goadl "github.com/adl-lang/goadl_rt/v3"
+	"github.com/adl-lang/goadl_rt/v3/sys/adlast"
 )
 
 func TestEnum(t *testing.T) {
-	x := simple_union.Make_UnionOfVoids_g(struct{}{})
+	x := simple_union.Make_UnionOfVoids_g()
 	out := &bytes.Buffer{}
 	enc := goadl.CreateJsonEncodeBinding(simple_union.Texpr_UnionOfVoids(), goadl.RESOLVER)
 	err := enc.Encode(out, x)
@@ -62,13 +63,13 @@ func TestUnions(t *testing.T) {
 		simple_union.Make_UnionOfPrimitives_d(41.01),
 		simple_union.Make_UnionOfPrimitives_e("sdfadf"),
 		simple_union.Make_UnionOfPrimitives_f([]string{"a", "b", "v"}),
-		simple_union.Make_UnionOfPrimitives_g(struct{}{}),
+		simple_union.Make_UnionOfPrimitives_g(),
 	}
 	out := &bytes.Buffer{}
-	te := goadl.Texpr_Vector(simple_union.Texpr_UnionOfPrimitives())
+	te := adlast.Texpr_Vector(simple_union.Texpr_UnionOfPrimitives())
 	enc := goadl.CreateJsonEncodeBinding(te, goadl.RESOLVER)
 	enc.Encode(out, xs)
-	if `[{"A":42},{"B":41},{"c":true},{"d":41.01},{"e":"sdfadf"},{"f":["a","b","v"]},{"g":null}]` != out.String() {
+	if out.String() != `[{"A":42},{"B":41},{"c":true},{"d":41.01},{"e":"sdfadf"},{"f":["a","b","v"]},{"g":null}]` {
 		t.Error("json str !=")
 	}
 	dec := goadl.CreateJsonDecodeBinding(te, goadl.RESOLVER)
@@ -84,20 +85,19 @@ func TestUnions(t *testing.T) {
 
 func TestStruct01(t *testing.T) {
 	a := "a"
-	x := struct01.Struct01{
-		A: struct{}{},
-		B: 41,
-		C: "",
-		D: map[string]any{
+	x := struct01.MakeAll_Struct01(
+		41,
+		"",
+		map[string]any{
 			"a": float64(123456),
 		},
-		E: []string{"a", "b", "c"},
-		F: map[string][]string{"a": {"z"}, "b": {"x"}, "sc": {"y"}},
-		I: &a,
-		J: struct01.B{
-			A: "sfd",
-		},
-	}
+		[]string{"a", "b", "c"},
+		map[string][]string{"a": {"z"}, "b": {"x"}, "sc": {"y"}},
+		map[string]map[string]string{},
+		map[string]map[string]*string{},
+		&a,
+		struct01.MakeAll_B("sfd"),
+	)
 
 	out := &bytes.Buffer{}
 	enc := goadl.CreateJsonEncodeBinding[struct01.Struct01](struct01.Texpr_Struct01(), goadl.RESOLVER)

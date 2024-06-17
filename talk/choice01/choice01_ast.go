@@ -8,867 +8,649 @@ import (
 	"github.com/adl-lang/goadl_rt/v3/sys/types"
 )
 
-func Texpr_ChoiceOne() goadl.ATypeExpr[ChoiceOne] {
-	return goadl.ATypeExpr[ChoiceOne]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "talk.choice01",
-						Name:       "ChoiceOne",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{},
-		},
-	}
+func Texpr_ChoiceOne() adlast.ATypeExpr[ChoiceOne] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("talk.choice01", "ChoiceOne"),
+		),
+		[]adlast.TypeExpr{},
+	)
+	return adlast.Make_ATypeExpr[ChoiceOne](te)
 }
 
 func AST_ChoiceOne() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "ChoiceOne",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Union_{
-				V: adlast.Union{
-					TypeParams: []adlast.Ident{},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "pattern",
-							SerializedName: "pattern",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Reference{
-										V: adlast.ScopedName{
-											ModuleName: "talk.choice01",
-											Name:       "Sumtype",
-										}},
-								},
-								Parameters: []adlast.TypeExpr{},
+	decl := adlast.MakeAll_Decl(
+		"ChoiceOne",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_union_(
+			adlast.MakeAll_Union(
+				[]adlast.Ident{},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"pattern",
+						"pattern",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_reference(
+								adlast.MakeAll_ScopedName(
+									"talk.choice01",
+									"Sumtype",
+								),
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"bootstrapping",
+						"bootstrapping",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Vector",
+							),
+							[]adlast.TypeExpr{
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_primitive(
+										"String",
+									),
+									[]adlast.TypeExpr{},
+								),
 							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "bootstrapping",
-							SerializedName: "bootstrapping",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Vector"},
-								},
-								Parameters: []adlast.TypeExpr{
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_Primitive{
-												V: "String"},
-										},
-										Parameters: []adlast.TypeExpr{},
-									},
-								},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "codeGen",
-							SerializedName: "codeGen",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Reference{
-										V: adlast.ScopedName{
-											ModuleName: "talk.choice01",
-											Name:       "LangGen",
-										}},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Just[any]{
-									V: map[string]interface{}{"language": "go_", "technique": "templates"}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{ /**/ adlast.ScopedName{ModuleName: "talk.choice01", Name: "Page"}: "Introduction to ADL"},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "talk.choice01",
-		Decl:       decl,
-	}
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"codeGen",
+						"codeGen",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_reference(
+								adlast.MakeAll_ScopedName(
+									"talk.choice01",
+									"LangGen",
+								),
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_just[any](
+							map[string]interface{}{"language": "go_", "technique": "templates"},
+						),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{adlast.Make_ScopedName("talk.choice01", "Page"): "Introduction to ADL"},
+	)
+	return adlast.Make_ScopedDecl("talk.choice01", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "talk.choice01", Name: "ChoiceOne"},
+		adlast.Make_ScopedName("talk.choice01", "ChoiceOne"),
 		AST_ChoiceOne(),
 	)
 }
 
-func Texpr_CodeGen[L any](l goadl.ATypeExpr[L]) goadl.ATypeExpr[CodeGen[L]] {
-	return goadl.ATypeExpr[CodeGen[L]]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "talk.choice01",
-						Name:       "CodeGen",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{l.Value},
-		},
-	}
+func Texpr_CodeGen[L any](l adlast.ATypeExpr[L]) adlast.ATypeExpr[CodeGen[L]] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("talk.choice01", "CodeGen"),
+		),
+		[]adlast.TypeExpr{l.Value},
+	)
+	return adlast.Make_ATypeExpr[CodeGen[L]](te)
 }
 
 func AST_CodeGen() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "CodeGen",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Struct_{
-				V: adlast.Struct{
-					TypeParams: []adlast.Ident{
-						"L",
-					},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "language",
-							SerializedName: "language",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_TypeParam{
-										V: "L"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "technique",
-							SerializedName: "technique",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Reference{
-										V: adlast.ScopedName{
-											ModuleName: "talk.choice01",
-											Name:       "CodeGenTechnique",
-										}},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "talk.choice01",
-		Decl:       decl,
-	}
+	decl := adlast.MakeAll_Decl(
+		"CodeGen",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_struct_(
+			adlast.MakeAll_Struct(
+				[]adlast.Ident{
+					"L",
+				},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"language",
+						"language",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_typeParam(
+								"L",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"technique",
+						"technique",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_reference(
+								adlast.MakeAll_ScopedName(
+									"talk.choice01",
+									"CodeGenTechnique",
+								),
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("talk.choice01", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "talk.choice01", Name: "CodeGen"},
+		adlast.Make_ScopedName("talk.choice01", "CodeGen"),
 		AST_CodeGen(),
 	)
 }
 
-func Texpr_CodeGenTechnique() goadl.ATypeExpr[CodeGenTechnique] {
-	return goadl.ATypeExpr[CodeGenTechnique]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "talk.choice01",
-						Name:       "CodeGenTechnique",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{},
-		},
-	}
+func Texpr_CodeGenTechnique() adlast.ATypeExpr[CodeGenTechnique] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("talk.choice01", "CodeGenTechnique"),
+		),
+		[]adlast.TypeExpr{},
+	)
+	return adlast.Make_ATypeExpr[CodeGenTechnique](te)
 }
 
 func AST_CodeGenTechnique() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "CodeGenTechnique",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Union_{
-				V: adlast.Union{
-					TypeParams: []adlast.Ident{},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "printf",
-							SerializedName: "printf",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Void"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "templates",
-							SerializedName: "templates",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Void"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "talk.choice01",
-		Decl:       decl,
-	}
+	decl := adlast.MakeAll_Decl(
+		"CodeGenTechnique",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_union_(
+			adlast.MakeAll_Union(
+				[]adlast.Ident{},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"printf",
+						"printf",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Void",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"templates",
+						"templates",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Void",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("talk.choice01", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "talk.choice01", Name: "CodeGenTechnique"},
+		adlast.Make_ScopedName("talk.choice01", "CodeGenTechnique"),
 		AST_CodeGenTechnique(),
 	)
 }
 
-func Texpr_ExhaustiveSwitch[T any](t goadl.ATypeExpr[T]) goadl.ATypeExpr[ExhaustiveSwitch[T]] {
-	return goadl.ATypeExpr[ExhaustiveSwitch[T]]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "talk.choice01",
-						Name:       "ExhaustiveSwitch",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{t.Value},
-		},
-	}
+func Texpr_ExhaustiveSwitch[T any](t adlast.ATypeExpr[T]) adlast.ATypeExpr[ExhaustiveSwitch[T]] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("talk.choice01", "ExhaustiveSwitch"),
+		),
+		[]adlast.TypeExpr{t.Value},
+	)
+	return adlast.Make_ATypeExpr[ExhaustiveSwitch[T]](te)
 }
 
 func AST_ExhaustiveSwitch() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "ExhaustiveSwitch",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Struct_{
-				V: adlast.Struct{
-					TypeParams: []adlast.Ident{
-						"T",
-					},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "sum_type",
-							SerializedName: "sum_type",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Reference{
-										V: adlast.ScopedName{
-											ModuleName: "talk.choice01",
-											Name:       "Sumtype",
-										}},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "impl",
-							SerializedName: "impl",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Reference{
-										V: adlast.ScopedName{
-											ModuleName: "talk.choice01",
-											Name:       "TypeSafe",
-										}},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "talk.choice01",
-		Decl:       decl,
-	}
+	decl := adlast.MakeAll_Decl(
+		"ExhaustiveSwitch",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_struct_(
+			adlast.MakeAll_Struct(
+				[]adlast.Ident{
+					"T",
+				},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"sum_type",
+						"sum_type",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_reference(
+								adlast.MakeAll_ScopedName(
+									"talk.choice01",
+									"Sumtype",
+								),
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"impl",
+						"impl",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_reference(
+								adlast.MakeAll_ScopedName(
+									"talk.choice01",
+									"TypeSafe",
+								),
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("talk.choice01", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "talk.choice01", Name: "ExhaustiveSwitch"},
+		adlast.Make_ScopedName("talk.choice01", "ExhaustiveSwitch"),
 		AST_ExhaustiveSwitch(),
 	)
 }
 
-func Texpr_LangGen() goadl.ATypeExpr[LangGen] {
-	return goadl.ATypeExpr[LangGen]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "talk.choice01",
-						Name:       "LangGen",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{},
-		},
-	}
+func Texpr_LangGen() adlast.ATypeExpr[LangGen] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("talk.choice01", "LangGen"),
+		),
+		[]adlast.TypeExpr{},
+	)
+	return adlast.Make_ATypeExpr[LangGen](te)
 }
 
 func AST_LangGen() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "LangGen",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Newtype_{
-				V: adlast.NewType{
-					TypeParams: []adlast.Ident{},
-					TypeExpr: adlast.TypeExpr{
-						TypeRef: adlast.TypeRef{
-							Branch: adlast.TypeRef_Reference{
-								V: adlast.ScopedName{
-									ModuleName: "talk.choice01",
-									Name:       "CodeGen",
-								}},
-						},
-						Parameters: []adlast.TypeExpr{
-							adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Reference{
-										V: adlast.ScopedName{
-											ModuleName: "talk.choice01",
-											Name:       "Language",
-										}},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-						},
+	decl := adlast.MakeAll_Decl(
+		"LangGen",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_newtype_(
+			adlast.MakeAll_NewType(
+				[]adlast.Ident{},
+				adlast.MakeAll_TypeExpr(
+					adlast.Make_TypeRef_reference(
+						adlast.MakeAll_ScopedName(
+							"talk.choice01",
+							"CodeGen",
+						),
+					),
+					[]adlast.TypeExpr{
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_reference(
+								adlast.MakeAll_ScopedName(
+									"talk.choice01",
+									"Language",
+								),
+							),
+							[]adlast.TypeExpr{},
+						),
 					},
-					Default: types.Maybe[any]{
-						Branch: types.Maybe_Nothing{
-							V: struct{}{}},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "talk.choice01",
-		Decl:       decl,
-	}
+				),
+				types.Make_Maybe_nothing[any](),
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("talk.choice01", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "talk.choice01", Name: "LangGen"},
+		adlast.Make_ScopedName("talk.choice01", "LangGen"),
 		AST_LangGen(),
 	)
 }
 
-func Texpr_Language() goadl.ATypeExpr[Language] {
-	return goadl.ATypeExpr[Language]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "talk.choice01",
-						Name:       "Language",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{},
-		},
-	}
+func Texpr_Language() adlast.ATypeExpr[Language] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("talk.choice01", "Language"),
+		),
+		[]adlast.TypeExpr{},
+	)
+	return adlast.Make_ATypeExpr[Language](te)
 }
 
 func AST_Language() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "Language",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Union_{
-				V: adlast.Union{
-					TypeParams: []adlast.Ident{},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "go_",
-							SerializedName: "go_",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Void"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "ts",
-							SerializedName: "ts",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Void"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "java",
-							SerializedName: "java",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Void"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "haskell",
-							SerializedName: "haskell",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Void"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "rust",
-							SerializedName: "rust",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Void"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "cpp",
-							SerializedName: "cpp",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Void"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "talk.choice01",
-		Decl:       decl,
-	}
+	decl := adlast.MakeAll_Decl(
+		"Language",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_union_(
+			adlast.MakeAll_Union(
+				[]adlast.Ident{},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"go_",
+						"go_",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Void",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"ts",
+						"ts",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Void",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"java",
+						"java",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Void",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"haskell",
+						"haskell",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Void",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"rust",
+						"rust",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Void",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"cpp",
+						"cpp",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Void",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("talk.choice01", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "talk.choice01", Name: "Language"},
+		adlast.Make_ScopedName("talk.choice01", "Language"),
 		AST_Language(),
 	)
 }
 
-func Texpr_Page() goadl.ATypeExpr[Page] {
-	return goadl.ATypeExpr[Page]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "talk.choice01",
-						Name:       "Page",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{},
-		},
-	}
+func Texpr_Page() adlast.ATypeExpr[Page] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("talk.choice01", "Page"),
+		),
+		[]adlast.TypeExpr{},
+	)
+	return adlast.Make_ATypeExpr[Page](te)
 }
 
 func AST_Page() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "Page",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Type_{
-				V: adlast.TypeDef{
-					TypeParams: []adlast.Ident{},
-					TypeExpr: adlast.TypeExpr{
-						TypeRef: adlast.TypeRef{
-							Branch: adlast.TypeRef_Primitive{
-								V: "String"},
-						},
-						Parameters: []adlast.TypeExpr{},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "talk.choice01",
-		Decl:       decl,
-	}
+	decl := adlast.MakeAll_Decl(
+		"Page",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_type_(
+			adlast.MakeAll_TypeDef(
+				[]adlast.Ident{},
+				adlast.MakeAll_TypeExpr(
+					adlast.Make_TypeRef_primitive(
+						"String",
+					),
+					[]adlast.TypeExpr{},
+				),
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("talk.choice01", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "talk.choice01", Name: "Page"},
+		adlast.Make_ScopedName("talk.choice01", "Page"),
 		AST_Page(),
 	)
 }
 
-func Texpr_Step() goadl.ATypeExpr[Step] {
-	return goadl.ATypeExpr[Step]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "talk.choice01",
-						Name:       "Step",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{},
-		},
-	}
+func Texpr_Step() adlast.ATypeExpr[Step] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("talk.choice01", "Step"),
+		),
+		[]adlast.TypeExpr{},
+	)
+	return adlast.Make_ATypeExpr[Step](te)
 }
 
 func AST_Step() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "Step",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Struct_{
-				V: adlast.Struct{
-					TypeParams: []adlast.Ident{},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "description",
-							SerializedName: "description",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "String"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "talk.choice01",
-		Decl:       decl,
-	}
+	decl := adlast.MakeAll_Decl(
+		"Step",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_struct_(
+			adlast.MakeAll_Struct(
+				[]adlast.Ident{},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"description",
+						"description",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"String",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_just[any](
+							"Hello World!",
+						),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("talk.choice01", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "talk.choice01", Name: "Step"},
+		adlast.Make_ScopedName("talk.choice01", "Step"),
 		AST_Step(),
 	)
 }
 
-func Texpr_Sumtype() goadl.ATypeExpr[Sumtype] {
-	return goadl.ATypeExpr[Sumtype]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "talk.choice01",
-						Name:       "Sumtype",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{},
-		},
-	}
+func Texpr_Sumtype() adlast.ATypeExpr[Sumtype] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("talk.choice01", "Sumtype"),
+		),
+		[]adlast.TypeExpr{},
+	)
+	return adlast.Make_ATypeExpr[Sumtype](te)
 }
 
 func AST_Sumtype() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "Sumtype",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Union_{
-				V: adlast.Union{
-					TypeParams: []adlast.Ident{},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "struct_of_pointers",
-							SerializedName: "struct_of_pointers",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Void"},
-								},
-								Parameters: []adlast.TypeExpr{},
+	decl := adlast.MakeAll_Decl(
+		"Sumtype",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_union_(
+			adlast.MakeAll_Union(
+				[]adlast.Ident{},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"struct_of_pointers",
+						"struct_of_pointers",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Void",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"disc_and_any",
+						"disc_and_any",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Void",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"interface_with_private_method",
+						"interface_with_private_method",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Void",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+					adlast.MakeAll_Field(
+						"type_safe",
+						"type_safe",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_reference(
+								adlast.MakeAll_ScopedName(
+									"talk.choice01",
+									"ExhaustiveSwitch",
+								),
+							),
+							[]adlast.TypeExpr{
+								adlast.MakeAll_TypeExpr(
+									adlast.Make_TypeRef_reference(
+										adlast.MakeAll_ScopedName(
+											"talk.choice01",
+											"Sumtype",
+										),
+									),
+									[]adlast.TypeExpr{},
+								),
 							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "disc_and_any",
-							SerializedName: "disc_and_any",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Void"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "interface_with_private_method",
-							SerializedName: "interface_with_private_method",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Void"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-						adlast.Field{
-							Name:           "type_safe",
-							SerializedName: "type_safe",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Reference{
-										V: adlast.ScopedName{
-											ModuleName: "talk.choice01",
-											Name:       "ExhaustiveSwitch",
-										}},
-								},
-								Parameters: []adlast.TypeExpr{
-									adlast.TypeExpr{
-										TypeRef: adlast.TypeRef{
-											Branch: adlast.TypeRef_Reference{
-												V: adlast.ScopedName{
-													ModuleName: "talk.choice01",
-													Name:       "Sumtype",
-												}},
-										},
-										Parameters: []adlast.TypeExpr{},
-									},
-								},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "talk.choice01",
-		Decl:       decl,
-	}
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("talk.choice01", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "talk.choice01", Name: "Sumtype"},
+		adlast.Make_ScopedName("talk.choice01", "Sumtype"),
 		AST_Sumtype(),
 	)
 }
 
-func Texpr_TypeSafe() goadl.ATypeExpr[TypeSafe] {
-	return goadl.ATypeExpr[TypeSafe]{
-		Value: adlast.TypeExpr{
-			TypeRef: adlast.TypeRef{
-				Branch: adlast.TypeRef_Reference{
-					V: adlast.ScopedName{
-						ModuleName: "talk.choice01",
-						Name:       "TypeSafe",
-					},
-				},
-			},
-			Parameters: []adlast.TypeExpr{},
-		},
-	}
+func Texpr_TypeSafe() adlast.ATypeExpr[TypeSafe] {
+	te := adlast.Make_TypeExpr(
+		adlast.Make_TypeRef_reference(
+			adlast.Make_ScopedName("talk.choice01", "TypeSafe"),
+		),
+		[]adlast.TypeExpr{},
+	)
+	return adlast.Make_ATypeExpr[TypeSafe](te)
 }
 
 func AST_TypeSafe() adlast.ScopedDecl {
-	decl := adlast.Decl{
-		Name: "TypeSafe",
-		Version: types.Maybe[uint32]{
-			Branch: types.Maybe_Nothing{
-				V: struct{}{}},
-		},
-		Type_: adlast.DeclType{
-			Branch: adlast.DeclType_Union_{
-				V: adlast.Union{
-					TypeParams: []adlast.Ident{},
-					Fields: []adlast.Field{
-						adlast.Field{
-							Name:           "callback",
-							SerializedName: "callback",
-							TypeExpr: adlast.TypeExpr{
-								TypeRef: adlast.TypeRef{
-									Branch: adlast.TypeRef_Primitive{
-										V: "Void"},
-								},
-								Parameters: []adlast.TypeExpr{},
-							},
-							Default: types.Maybe[any]{
-								Branch: types.Maybe_Nothing{
-									V: struct{}{}},
-							},
-							Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-						},
-					},
-				}},
-		},
-		Annotations: customtypes.MapMap[adlast.ScopedName, any]{},
-	}
-	return adlast.ScopedDecl{
-		ModuleName: "talk.choice01",
-		Decl:       decl,
-	}
+	decl := adlast.MakeAll_Decl(
+		"TypeSafe",
+		types.Make_Maybe_nothing[uint32](),
+		adlast.Make_DeclType_union_(
+			adlast.MakeAll_Union(
+				[]adlast.Ident{},
+				[]adlast.Field{
+					adlast.MakeAll_Field(
+						"callback",
+						"callback",
+						adlast.MakeAll_TypeExpr(
+							adlast.Make_TypeRef_primitive(
+								"Void",
+							),
+							[]adlast.TypeExpr{},
+						),
+						types.Make_Maybe_nothing[any](),
+						customtypes.MapMap[adlast.ScopedName, any]{},
+					),
+				},
+			),
+		),
+		customtypes.MapMap[adlast.ScopedName, any]{},
+	)
+	return adlast.Make_ScopedDecl("talk.choice01", decl)
 }
 
 func init() {
 	goadl.RESOLVER.Register(
-		adlast.ScopedName{ModuleName: "talk.choice01", Name: "TypeSafe"},
+		adlast.Make_ScopedName("talk.choice01", "TypeSafe"),
 		AST_TypeSafe(),
 	)
 }

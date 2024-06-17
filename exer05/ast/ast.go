@@ -6,14 +6,20 @@ import (
 )
 
 type X struct {
+	_X
+}
+
+type _X struct {
 	Ast map[string]adlast.Module `json:"ast"`
 }
 
-func New_X(
+func MakeAll_X(
 	ast map[string]adlast.Module,
 ) X {
 	return X{
-		Ast: ast,
+		_X{
+			Ast: ast,
+		},
 	}
 }
 
@@ -21,7 +27,9 @@ func Make_X(
 	ast map[string]adlast.Module,
 ) X {
 	ret := X{
-		Ast: ast,
+		_X{
+			Ast: ast,
+		},
 	}
 	return ret
 }
