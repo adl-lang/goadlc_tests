@@ -68,49 +68,6 @@ func Make_S2[A any](
 	return ret
 }
 
-func (*S2[A]) TypeTokenTexprs() map[string]map[string]adlast.TypeExpr {
-	res := map[string]map[string]adlast.TypeExpr{
-		"a": {
-			"a": adlast.MakeAll_TypeExpr(
-				adlast.Make_TypeRef_primitive(
-					"String",
-				),
-				[]adlast.TypeExpr{},
-			),
-		},
-		"b": {
-			"a": adlast.MakeAll_TypeExpr(
-				adlast.Make_TypeRef_reference(
-					adlast.MakeAll_ScopedName(
-						"exer06.tttest",
-						"S3",
-					),
-				),
-				[]adlast.TypeExpr{},
-			),
-		},
-		"c": {
-			"a": adlast.MakeAll_TypeExpr(
-				adlast.Make_TypeRef_primitive(
-					"Vector",
-				),
-				[]adlast.TypeExpr{
-					adlast.MakeAll_TypeExpr(
-						adlast.Make_TypeRef_reference(
-							adlast.MakeAll_ScopedName(
-								"exer06.tttest",
-								"S3",
-							),
-						),
-						[]adlast.TypeExpr{},
-					),
-				},
-			),
-		},
-	}
-	return res
-}
-
 type S3 struct {
 	_S3
 }
@@ -163,30 +120,6 @@ func Make_S4[A any](
 		},
 	}
 	return ret
-}
-
-func (*S4[A]) TypeTokenTexprs() map[string]map[string]adlast.TypeExpr {
-	res := map[string]map[string]adlast.TypeExpr{
-		"z": {
-			"a": adlast.MakeAll_TypeExpr(
-				adlast.Make_TypeRef_reference(
-					adlast.MakeAll_ScopedName(
-						"exer06.tttest",
-						"S4",
-					),
-				),
-				[]adlast.TypeExpr{
-					adlast.MakeAll_TypeExpr(
-						adlast.Make_TypeRef_typeParam(
-							"A",
-						),
-						[]adlast.TypeExpr{},
-					),
-				},
-			),
-		},
-	}
-	return res
 }
 
 type S5[A any, B any] struct {
@@ -440,32 +373,4 @@ func (*Z) Default_c() S5[string, int64] {
 			[]adlast.TypeExpr{},
 		)),
 	)
-}
-
-func (*Z) TypeTokenTexprs() map[string]map[string]adlast.TypeExpr {
-	res := map[string]map[string]adlast.TypeExpr{
-		"a": {
-			"a": adlast.MakeAll_TypeExpr(
-				adlast.Make_TypeRef_primitive(
-					"String",
-				),
-				[]adlast.TypeExpr{},
-			),
-		},
-		"c": {
-			"a": adlast.MakeAll_TypeExpr(
-				adlast.Make_TypeRef_primitive(
-					"String",
-				),
-				[]adlast.TypeExpr{},
-			),
-			"b": adlast.MakeAll_TypeExpr(
-				adlast.Make_TypeRef_primitive(
-					"Int64",
-				),
-				[]adlast.TypeExpr{},
-			),
-		},
-	}
-	return res
 }
