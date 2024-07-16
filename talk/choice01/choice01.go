@@ -542,7 +542,7 @@ func (*Sumtype) MakeNewBranch(key string) (any, error) {
 	case "interface_with_private_method":
 		return &_Sumtype_Interface_with_private_method{}, nil
 	case "type_safe":
-		return &_Sumtype_Type_safe[Sumtype]{}, nil
+		return &_Sumtype_Type_safe{}, nil
 	}
 	return nil, fmt.Errorf("unknown branch is : %s", key)
 }
@@ -556,14 +556,14 @@ type _Sumtype_Disc_and_any struct {
 type _Sumtype_Interface_with_private_method struct {
 	V struct{} `branch:"interface_with_private_method"`
 }
-type _Sumtype_Type_safe[Sumtype any] struct {
+type _Sumtype_Type_safe struct {
 	V ExhaustiveSwitch[Sumtype] `branch:"type_safe"`
 }
 
 func (_Sumtype_Struct_of_pointers) isSumtypeBranch()            {}
 func (_Sumtype_Disc_and_any) isSumtypeBranch()                  {}
 func (_Sumtype_Interface_with_private_method) isSumtypeBranch() {}
-func (_Sumtype_Type_safe[Sumtype]) isSumtypeBranch()            {}
+func (_Sumtype_Type_safe) isSumtypeBranch()                     {}
 
 func Make_Sumtype_struct_of_pointers() Sumtype {
 	return Sumtype{
@@ -585,7 +585,7 @@ func Make_Sumtype_interface_with_private_method() Sumtype {
 
 func Make_Sumtype_type_safe(v ExhaustiveSwitch[Sumtype]) Sumtype {
 	return Sumtype{
-		_Sumtype_Type_safe[Sumtype]{v},
+		_Sumtype_Type_safe{v},
 	}
 }
 
@@ -605,7 +605,7 @@ func (un Sumtype) Cast_interface_with_private_method() (struct{}, bool) {
 }
 
 func (un Sumtype) Cast_type_safe() (ExhaustiveSwitch[Sumtype], bool) {
-	br, ok := un.Branch.(_Sumtype_Type_safe[Sumtype])
+	br, ok := un.Branch.(_Sumtype_Type_safe)
 	return br.V, ok
 }
 
@@ -630,7 +630,7 @@ func Handle_Sumtype[T any](
 		if interface_with_private_method != nil {
 			return interface_with_private_method(_b.V)
 		}
-	case _Sumtype_Type_safe[Sumtype]:
+	case _Sumtype_Type_safe:
 		if type_safe != nil {
 			return type_safe(_b.V)
 		}
@@ -662,7 +662,7 @@ func HandleWithErr_Sumtype[T any](
 		if interface_with_private_method != nil {
 			return interface_with_private_method(_b.V)
 		}
-	case _Sumtype_Type_safe[Sumtype]:
+	case _Sumtype_Type_safe:
 		if type_safe != nil {
 			return type_safe(_b.V)
 		}

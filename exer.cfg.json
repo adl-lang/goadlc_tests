@@ -1,23 +1,25 @@
 {
-  "Searchdir": [
-    "adl"
-  ],
-  "Outputdir": ".",
-  "MergeAdlext": "adl-go",
-  "Debug": true,
-  "NoGoFmt": false,
-  "GoAdlPath": "github.com/adl-lang/goadl_rt/v3",
-  "ModulePath": "",
-  "GoModFile": "",
-  "ExcludeAst": false,
-  "BundleMap": [
-    {
-      "AdlModuleNamePrefix": "sys",
-      "GoModPath": "github.com/adl-lang/goadl_rt/v3",
-      "AdlSrc": "file://../goadlc/adl/stdlib_go"
-    }
-  ],
-  "Files": [
-    "adl/**/*.adl"
-  ]
+  "Loader": {
+    "Searchdir": [
+      "adl"
+    ],
+    "MergeAdlext": "adl-go",
+    "BundleMaps": [
+      {
+        "AdlModuleNamePrefix": "sys",
+        "GoModPath": "github.com/adl-lang/goadl_rt/v3",
+        "AdlSrc": "file://../goadlc/adl/stdlib_go"
+      }
+    ],
+    "Files": [
+      "adl/**/*.adl"
+    ]
+  },
+  "Mod": {
+    "Outputdir": "."
+  },
+  "GoTypes": {
+    "GoAdlPath": "github.com/adl-lang/goadl_rt/v3",
+    "Outputdir": "."
+  }
 }
