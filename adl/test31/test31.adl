@@ -1,0 +1,177 @@
+module test31.test31 {
+
+struct MyStructV1 {
+    Word64 quantity;
+};
+
+struct MyStructV2 {
+    Measure quantity;
+};
+
+union Measure {
+    @TypeDiscrimination { "@v": 0 }
+    Word64 count;
+    sys.types.Pair<Word64,Double> multiple;
+};
+
+union StructTest {
+    @TypeDiscrimination { "@v": 0 }
+    S1 abc;
+    S1 def;
+};
+
+struct S1 {
+    Word64 quant;
+    Double value;
+};
+
+// will cause an error
+union VoidTest {
+    @TypeDiscrimination { "@v": 0 }
+    Void abc;
+    S1 def;
+};
+
+// will cause an error
+union UnionOfLiftedUnion {
+    @TypeDiscrimination { "@v": 0 }
+    UnionOfLiftedUnion abc;
+    S1 def;
+};
+
+union UnionUnion {
+    // @TypeDiscrimination { "@v": 0 }
+    // String a;
+    @TypeDiscrimination { "@v": 1 }
+    U1 abc;
+    S1 def;
+};
+
+union U1 {
+    @TypeDiscrimination { "@v": 3 }
+    String a;
+    Int64 b;
+};
+
+union Struct02Test {
+    @TypeDiscrimination { "@v": 0 }
+    U1 u1;
+    @TypeDiscrimination { "@v": 0 }
+    S1 s1;
+};
+
+union NullableTest {
+    @TypeDiscrimination { "@v": 0 }
+    Nullable<String> a;
+    Void b;
+};
+
+union VectorTest {
+    @TypeDiscrimination { "@v": 0 }
+    Vector<String> a;
+    Vector<Struct02Test> b;
+};
+
+union VectorErrorTest {
+    @TypeDiscrimination { "@v": 0 }
+    Vector<String> a;
+    @TypeDiscrimination { "@v": 0 }
+    Vector<Struct02Test> b;
+};
+
+union VectorOfTypeDiscriminationUnionTest {
+    Vector<Struct02Test> b;
+};
+
+union UnionOfVectorOfTypeDiscriminationUnionTest {
+    @TypeDiscrimination { "@v": 0 }
+    Vector<Struct02Test> b;
+};
+
+union Ua {
+    Vector<Ub> u_b;
+};
+
+union Ub {
+    Vector<Uc> u_c;
+};
+
+union Uc {
+    @TypeDiscrimination { "@v": 0 }
+    Vector<String> a;
+};
+
+union UofMaybe {
+    sys.types.Maybe<UnionUnion> a;
+};
+
+union UTypeDiscriminationofMaybe {
+    @TypeDiscrimination { "@v": 0 }
+    sys.types.Maybe<UnionUnion> a;
+};
+
+// union A1 {
+//     @TypeDiscrimination { "@v": 0 }
+//     String a;
+// };
+
+// union A2 {
+//     @TypeDiscrimination { "@v": 0 }
+//     A1 a;
+// };
+
+union A1 {
+    @TypeDiscrimination { "@v": 6 }
+    A2 a;
+};
+union A2 {
+    @TypeDiscrimination { "@v": 7 }
+    A3 b;
+};
+union A3 {
+    @TypeDiscrimination { "@v": 8 }
+    A4 c;
+};
+union A4 {
+    @TypeDiscrimination { "@v": 9 }
+    String d;
+};
+
+type MyString = String;
+type MyVecString = Vector<String>;
+type MyVecMyString = Vector<MyString>;
+
+union B1 {
+    @TypeDiscrimination { "@v": 0 }
+    MyString f1;
+    @TypeDiscrimination { "@v": 0 }
+    Vector<MyString> f2;
+};
+
+union B2 {
+    @TypeDiscrimination { "@v": 0 }
+    MyVecString f3;
+};
+
+union B3 {
+    @TypeDiscrimination { "@v": 0 }
+    MyVecMyString f3;
+};
+
+union GenU<T> {
+    T a;
+};
+
+union B4 {
+    @TypeDiscrimination { "@v": 0 }
+    GenU<String> b;
+};
+
+type MyGenUString = GenU<String>;
+
+union B5 {
+    @TypeDiscrimination { "@v": 0 }
+    MyGenUString b;
+};
+
+};
